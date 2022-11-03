@@ -1,0 +1,23 @@
+[
+    {
+        "keys": [
+            "ctrl+tab"
+        ],
+        "command": "next_view"
+    },
+    {
+        "keys": [
+            "ctrl+shift+tab"
+        ],
+        "command": "prev_view"
+    },
+    { "keys": ["ctrl+1"], "command": "toggle_mozc" },
+    {
+    "keys": ["ctrl+shift+b"],
+    "cmd": ["/home/wbabu/.pyenv/shims/python", "$file"],
+    },
+    {
+        "keys": ["ctrl+shift+t"], 
+        "command": "terminal_view_open",
+    }
+]

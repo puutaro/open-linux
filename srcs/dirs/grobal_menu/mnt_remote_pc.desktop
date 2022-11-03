@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=遠隔PCのマウント
+Name[ja]=遠隔PCのマウント
+Name[en]=mnt remote pc
+Icon=utilities-terminal
+Exec=cimnt
+Comment[ja]=遠隔PCのマウント
+Categories=GTK;Settings;Utility;
+

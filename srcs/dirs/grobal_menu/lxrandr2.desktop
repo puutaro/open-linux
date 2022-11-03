@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.1
+Type=Application
+Name=モニタ
+Comment=A small descriptive blurb about this application.
+Icon=video-display
+Exec=lxrandr
+Actions=
+Categories=Utility;
+NotShowIn=GNOME;KDE;XFCE;MATE;

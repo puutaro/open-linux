@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#sed -i '/OnlyShowIn/d' ~/.config/autostart/lxrandr-autostart.desktop &
+xdg-user-dirs-update && xdg-user-dirs-gtk-update &
+pcmanfm --desktop &
+lxpanel &
+lxpolkit &
+#nm-applet &
+#obinput --load &
+xfce4-power-manager &
+#ob-autostart -d &
+
+sh /home/CURRENT_USER_NAME/startup.sh &

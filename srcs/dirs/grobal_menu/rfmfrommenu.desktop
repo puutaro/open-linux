@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=ファイルマネージャ(管理者権限)
+Icon=system-file-manager
+Exec=pcmanfm admin:///root/
+Comment[ja]=ルートでPCManFMを開く
+Categories=System;
+NotShowIn=GNOME;KDE;MATE;
+

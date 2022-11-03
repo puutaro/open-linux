@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=タッチパッドスクロール量調整
+Name[ja]=タッチパッドスクロール量調整
+Name[en]=touchpad scroll distance
+Icon=utilities-terminal
+Exec=tscroll
+Comment[ja]=タッチパッドスクロール量調整
+Comment[en]=touchpad scroll distance
+Categories=GTK;Settings;HardwareSettings;X-LXDE-Settings;

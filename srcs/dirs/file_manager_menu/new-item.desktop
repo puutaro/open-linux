@@ -1,0 +1,15 @@
+[Desktop Entry]
+Type=Action
+Icon=gnome-panel-launcher
+Name=ここでランチャーを作成
+Name[ja]=ここでランチャーを作成
+Name[en]=Create new launcher
+Profiles=profile-zero;
+
+[X-Action-Profile profile-zero]
+Name=Default profile
+Name[en]=Default profile
+MimeTypes = inode/directory;
+SelectionCount = < 2
+TryExec=exo-desktop-item-edit
+Exec=sh -c "exo-desktop-item-edit ~/デスクトップ --create-new "

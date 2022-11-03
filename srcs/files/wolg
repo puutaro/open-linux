@@ -1,0 +1,4 @@
+#!/bin/bash
+sleep 30
+ethtool -s CURRENT_LAN_DEVICE_NAME wol g 
+exit

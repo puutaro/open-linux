@@ -1,0 +1,17 @@
+{
+	"bootstrapped": true,
+	"repositories":
+	[
+		"https://github.com/yasuyuky/SublimeMozcInput",
+	],
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"Package Control",
+		"SublimeMozcInput",
+		"Terminal",
+		"TerminalView",
+	],
+}

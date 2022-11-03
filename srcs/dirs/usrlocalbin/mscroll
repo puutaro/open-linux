@@ -1,0 +1,4 @@
+#!/bin/bash
+
+set -e
+x-terminal-emulator -e bash $(dirname $0)/mscroll_dir/exec_mscroll.sh

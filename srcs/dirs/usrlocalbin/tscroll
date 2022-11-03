@@ -1,0 +1,4 @@
+#!/bin/bash
+
+set -e
+x-terminal-emulator -e bash $(dirname $0)/tscroll_dir/exec_tscroll.sh

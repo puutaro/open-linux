@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Action
+Tooltip=ここで端末を開く
+Name=Open Terminal
+Profiles=profile-one;
+Icon=utilities-terminal
+NotShowIn=GNOME;KDE;MATE;
+
+
+[X-Action-Profile profile-one]
+MimeTypes=inode/directory;
+Exec=x-terminal-emulator %d
+Name=Default profile

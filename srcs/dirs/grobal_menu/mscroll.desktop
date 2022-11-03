@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=マウススクロール量調整
+Name[ja]=マウススクロール量調整
+Name[en]=Mouse Scroll Distance Settings
+Icon=utilities-terminal
+Exec=mscroll
+Comment[ja]=マウススクロール量調整
+Comment[en]=Mouse Scroll Distance Settings
+Categories=GTK;Settings;HardwareSettings;X-LXDE-Settings;

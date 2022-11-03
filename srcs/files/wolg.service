@@ -1,0 +1,10 @@
+[Unit]
+Description=Enable Wake-On-Lan
+ 
+[Service]
+Type=simple
+ExecStart=/home/wolg
+Restart=no
+ 
+[Install]
+WantedBy=multi-user.target

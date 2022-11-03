@@ -1,0 +1,101 @@
+# lxpanel <profile> config file. Manually editing is not recommended.
+# Use preference dialog in lxpanel to adjust config when you can.
+
+Global {
+  edge=left
+  allign=left
+  margin=0
+  widthtype=percent
+  width=100
+  height=52
+  transparent=1
+  tintcolor=#000000
+  alpha=59
+  setdocktype=0
+  setpartialstrut=1
+  usefontcolor=0
+  fontcolor=#ffffff
+  usefontsize=1
+  fontsize=11
+  background=0
+  backgroundfile=/usr/share/lxpanel/images/background.png
+  align=left
+  iconsize=49
+}
+Plugin {
+  type=menu
+  Config {
+    image=CURRENT_LOGO_PATH
+    system {
+    }
+    separator {
+    }
+    item {
+      image=terminal
+      command=run
+    }
+    separator {
+    }
+    item {
+      image=gnome-logout
+      command=logout
+    }
+  }
+}
+Plugin {
+  type=space
+  Config {
+    Size=4
+  }
+}
+Plugin {
+  type=wincmd
+  Config {
+    Button1=iconify
+    Button2=shade
+    Toggle=1
+  }
+}
+Plugin {
+  type=taskbar
+  Config {
+  }
+  expand=1
+}
+Plugin {
+  type=cpu
+  Config {
+  }
+}
+Plugin {
+  type=dclock
+  Config {
+    ClockFmt=%R
+    TooltipFmt=%A %x
+    BoldFont=1
+    IconOnly=0
+    CenterText=1
+  }
+}
+Plugin {
+  type=volume
+  Config {
+    MixerCommand=pavucontrol
+    MixerCommandTerm=0
+  }
+}
+Plugin {
+  type=tray
+  Config {
+  }
+}
+Plugin {
+  type=dclock
+  Config {
+    ClockFmt=%R
+    TooltipFmt=%A %x
+    BoldFont=1
+    IconOnly=0
+    CenterText=0
+  }
+}

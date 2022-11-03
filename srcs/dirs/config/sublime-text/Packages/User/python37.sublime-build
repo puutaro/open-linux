@@ -1,0 +1,6 @@
+  {
+        "cmd": ["x-terminal-emulator -e 'bash -c \"\\$HOME/.pyenv/shims/python -u $file;echo;echo Press ENTER to exit; read line\"'"],"shell": true,
+        "selector": "source.python",
+        "file_regex": "file \"(...*?)\", line ([0-9]+)",
+        "env": {"LANG": "ja_JP.UTF-8", "AWS_DEFAULT_PROFILE":"soguu"},	
+    }

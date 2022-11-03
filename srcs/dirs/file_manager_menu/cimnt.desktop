@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Action
+Tooltip=遠隔PCのマウント
+Name=Mount Remote
+Profiles=profile-one;
+Icon=utilities-terminal
+
+
+[X-Action-Profile profile-one]
+MimeTypes=inode/directory;
+Exec=cimnt
+Name=Default profile

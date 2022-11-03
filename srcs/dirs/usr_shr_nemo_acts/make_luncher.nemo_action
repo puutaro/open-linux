@@ -1,0 +1,8 @@
+[Nemo Action]
+Active=true
+Name=create luncher
+Comment=create luncher
+Exec=exo-desktop-item-edit %f --create-new
+Icon-Name=meld
+Selection=None
+Extensions=any

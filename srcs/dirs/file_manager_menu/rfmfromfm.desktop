@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name = Open as Root
+Tooltip =管理者権限でこのフォルダを開く
+Icon =system-file-manager
+Profiles = on_folder;
+NotShowIn=GNOME;KDE;XFCE;MATE;
+
+[X-Action-Profile on_folder]
+Name = Open as Root
+MimeTypes = inode/directory;
+SelectionCount = 1
+Exec=pcmanfm admin://%f

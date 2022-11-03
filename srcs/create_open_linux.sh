@@ -191,6 +191,12 @@ if [ -z "${google_list_how}" ]; then
   sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' && sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
   sudo apt update -y && sudo apt-get install google-chrome-stable -y
 fi
+# cmdclick install
+git clone "https://github.com/kitamura-take/cmdclick.git" "${HOME}/.cmdclick"
+sudo bash "${HOME}/.cmdclick/linux/install/installer.sh"
+# difbk install
+git clone https://github.com/kitamura-take/difbk.git ~/.difbk
+sudo bash "${HOME}/.difbk/install/install.sh" "l"
 # openvpn install
 sudo apt-get install openvpn -y && sudo apt-get install network-manager-openvpn -y && sudo apt-get install network-manager-openvpn-gnome -y
 sudo apt-add-repository -y ppa:remmina-ppa-team/remmina-next

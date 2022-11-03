@@ -44,12 +44,6 @@ install_dialog ${ALL_QUESTION_TIMES} "Remote Desktop (リモートデスクト�
 REMOTE_DESKTOP_INSTALL_CONFIRM=${CONFIRM}
 install_dialog ${ALL_QUESTION_TIMES} "Sublime text (開発用の軽量エディタ)"
 SUBLIME_TEXT_INSTALL_CONFIRM=${CONFIRM}
-install_dialog ${ALL_QUESTION_TIMES} "Audio Relay (他のスマホやPCの音をストリーミング再生できる)"
-AUDIO_RELAY_INSTALL_CONFIRM=${CONFIRM}
-install_dialog ${ALL_QUESTION_TIMES} "Haropad (便利なマークダウンエディタ)"
-HARO_PAD_INSTALL_CONFIRM=${CONFIRM}
-install_dialog ${ALL_QUESTION_TIMES} "Drawio (便利な図作成ツール)"
-DRAWIO_INSTALL_CONFIRM=${CONFIRM}
 
 #再確認画面
 echo "###########################################################################"
@@ -181,9 +175,9 @@ sudo apt install -y lxappearance lxhotkey-dev tumbler
 # mtools:Distroshare Ubuntu Imagerでiso作成に必要 ubiquity ubiquity-frontend-gtk:gui installer
 #sudo apt-get install -y ubiquity ubiquity-frontend-gtk
 #mintグリーンアイコンインストール
-#wget http://packages.linuxmint.com/pool/main/m/mint-y-icons/mint-y-icons_1.3.4_all.deb
-sudo cp -rvf "${SOURCE_THEMES_PATH}/mint-y-icons_1.3.4_all.deb" "${TARGET_HOME_DIR_PATH}/"
 cd "${TARGET_HOME_DIR_PATH}"
+wget http://packages.linuxmint.com/pool/main/m/mint-y-icons/mint-y-icons_1.3.4_all.deb
+# sudo cp -rvf "${SOURCE_THEMES_PATH}/mint-y-icons_1.3.4_all.deb" "${TARGET_HOME_DIR_PATH}/"
 sudo dpkg -i mint-y-icons_1.3.4_all.deb
 #chrome install
 google_list_how="$(echo "$(cat /etc/apt/sources.list.d/google.list | grep "deb http://dl.google.com/linux/chrome/deb/ stable main")")"
@@ -531,33 +525,6 @@ if [ "${WAKE_UP_ON_LAN_INSTALL_CONFIRM}" = "y" ] && [ -n "${LAN_DEVICE}" ]; then
   sudo systemctl daemon-reload
   sudo systemctl enable wolg.service
   sudo systemctl start wolg.service
-fi
-#オーディオリレイインストール
-if [ "${AUDIO_RELAY_INSTALL_CONFIRM}" = "y" ]; then
-  cd "${TARGET_HOME_DIR_PATH}"
-  audiorelay_name="audiorelay-0.22.1.deb"
-  wget "https://dl.audiorelay.net/setups/linux/${audiorelay_name}"
-  # sudo cp -rvf "${SOURCE_FILES_DIR_PATH}/audiorelay-0.22.1.deb" "${TARGET_HOME_DIR_PATH}/"
-  # cd "${TARGET_HOME_DIR_PATH}"
-  sudo dpkg -i "${audiorelay_name}"
-fi
-#haropad install(markdown editor)
-if [ "${HARO_PAD_INSTALL_CONFIRM}" = "y" ]; then
-  cd "${TARGET_HOME_DIR_PATH}"
-  haropad_name="haroopad-v0.13.1-x64.deb"
-  wget "https://bitbucket.org/rhiokim/haroopad-download/downloads/${haropad_name}"
-  #wget https://bitbucket.org/rhiokim/haroopad-download/downloads/haroopad-v0.12.2-i386.deb
-  # sudo cp -rvf "${SOURCE_FILES_DIR_PATH}/${haropad_name}" "${TARGET_HOME_DIR_PATH}/"
-  cd "${TARGET_HOME_DIR_PATH}"
-  sudo dpkg -i "${haropad_name}"
-fi
-if [ "${DRAWIO_INSTALL_CONFIRM}" = "y" ]; then
-  cd "${TARGET_HOME_DIR_PATH}"
-  drowio_name="drawio-amd64-15.7.3.deb"
-  wget "https://github.com/jgraph/drawio-desktop/releases/download/v15.7.3/${drowio_name}"
-  # sudo cp -rvf "${SOURCE_FILES_DIR_PATH}/drawio-amd64-15.7.3.deb" "${TARGET_HOME_DIR_PATH}/"
-  # cd "${TARGET_HOME_DIR_PATH}"
-  sudo dpkg -i "${drowio_name}"
 fi
 #----------------------------------------------
 

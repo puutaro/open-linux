@@ -15,7 +15,7 @@ SOURCE_DIR_PATH=$(dirname $0)
 #-------------------------------------
 
 #--------- CONFIRM -------------
-ALL_QUESTION_TIMES=16
+ALL_QUESTION_TIMES=13
 ALL_QUESTION_SEED_TIMES=1
 
 #ユーザー名入力画面,アンインストール、インストールパッケージ確認
@@ -160,8 +160,17 @@ curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo 
 if [ ! -e "/usr/local/bin/fd" ]; then sudo ln -s $(which fdfind) /usr/local/bin/fd ;fi
 # fzf install
 if [ ! -e "${TARGET_HOME_DIR_PATH}/.fzf" ];then
-  git clone https://github.com/junegunn/fzf.git ${TARGET_HOME_DIR_PATH}/.fzf && yes | ${TARGET_HOME_DIR_PATH}/.fzf/install
+  git clone https://github.com/junegunn/fzf.git "${TARGET_HOME_DIR_PATH}/.fzf" && yes | "${TARGET_HOME_DIR_PATH}/.fzf/install"
 fi
+exist_fzf_source_cmd=$(\
+  cat "${TARGET_HOME_DIR_PATH}/.bashrc" \
+  | grep '\[ -f ~/.fzf.bash \] && source ~/.fzf.bash' \
+)
+case "${exist_fzf_source_cmd}" in 
+  "")
+    echo "[ -f ~/.fzf.bash ] && source ~/.fzf.bash" >> "${TARGET_HOME_DIR_PATH}/.bashrc"
+;;esac
+unset -v exist_fzf_source_cmd
 # rga install (super grep made rust)
 sudo apt install ripgrep pandoc poppler-utils ffmpeg -y
 wget -O - 'https://github.com/phiresky/ripgrep-all/releases/download/v0.9.6/ripgrep_all-v0.9.6-x86_64-unknown-linux-musl.tar.gz' | tar zxvf - && sudo mv ripgrep_all-v0.9.6-x86_64-unknown-linux-musl/rga* /usr/local/bin
@@ -186,11 +195,11 @@ if [ -z "${google_list_how}" ]; then
   sudo apt update -y && sudo apt-get install google-chrome-stable -y
 fi
 # cmdclick install
-git clone "https://github.com/kitamura-take/cmdclick.git" "${HOME}/.cmdclick"
-sudo bash "${HOME}/.cmdclick/linux/install/installer.sh"
+git clone "https://github.com/kitamura-take/cmdclick.git" "${TARGET_HOME_DIR_PATH}/.cmdclick"
+sudo bash "${TARGET_HOME_DIR_PATH}/.cmdclick/linux/install/installer.sh"
 # difbk install
-git clone https://github.com/kitamura-take/difbk.git ~/.difbk
-sudo bash "${HOME}/.difbk/install/install.sh" "l"
+git clone https://github.com/kitamura-take/difbk.git "${TARGET_HOME_DIR_PATH}/.difbk"
+sudo bash "${TARGET_HOME_DIR_PATH}/.difbk/install/install.sh" "l"
 # openvpn install
 sudo apt-get install openvpn -y && sudo apt-get install network-manager-openvpn -y && sudo apt-get install network-manager-openvpn-gnome -y
 sudo apt-add-repository -y ppa:remmina-ppa-team/remmina-next

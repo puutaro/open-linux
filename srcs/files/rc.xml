@@ -222,7 +222,7 @@
     </keybind>
     <keybind key="W-C-S-d">
       <action name="Execute">
-        <command>xrandr --output eDP-1  --mode 1368x768 --output HDMI-1 --off</command>
+        <command>xrandr --output eDP-1  --mode 1366x768 --output HDMI-1 --off</command>
       </action>
     </keybind>
     <keybind key="C-A-Left">

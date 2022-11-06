@@ -150,10 +150,9 @@ sudo apt install -y fcitx-config-gtk
 #gimp 画像編集ソフト lxpolkit:guiでroot実行するのに必要 mousepad:メモ帳 lxinput:マウスやキーボードの設定
 #yad:gtk shell library gdb:cのdebug tool nkf:shift-jis等変換 jq:json扱うツール
 # fd-find:high speed find  rcs:diff3,merge 
-# libgtk2.0-0:i386:haroopad require package
 # commnt out thunar  thunar-archive-plugin
 # rhythmbox : musicplayer
-sudo apt install -y pcmanfm xinput xinit nano synapse alacarte easystroke curl tlp tlp-rdw powertop git seahorse gnome-disk-utility xfce4-terminal xfce4-taskmanager dex snapd imwheel gufw xorgxrdp vino obconf numlockx samba gdebi gparted cifs-utils smbclient gnome-disk-utility wget mtools gimp file-roller lxpolkit mousepad lxinput catfish yad gdb nkf zip unzip rename lxc-utils jq openssh-client netdiscover fd-find colordiff rcs libgtk2.0-0:i386 rhythmbox
+sudo apt install -y pcmanfm xinput xinit nano synapse alacarte easystroke curl tlp tlp-rdw powertop git seahorse gnome-disk-utility xfce4-terminal xfce4-taskmanager dex snapd imwheel gufw xorgxrdp vino obconf numlockx samba gdebi gparted cifs-utils smbclient gnome-disk-utility wget mtools gimp file-roller lxpolkit mousepad lxinput catfish yad gdb nkf zip unzip rename lxc-utils jq openssh-client netdiscover fd-find colordiff rcs rhythmbox
 # install gh command
 curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null && sudo apt update && sudo apt install -y gh
 # synblic link for fd

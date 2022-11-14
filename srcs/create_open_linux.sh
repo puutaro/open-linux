@@ -194,10 +194,14 @@ if [ -z "${google_list_how}" ]; then
   sudo apt update -y && sudo apt-get install google-chrome-stable -y
 fi
 # cmdclick install
-git clone "https://github.com/kitamura-take/cmdclick.git" "${TARGET_HOME_DIR_PATH}/.cmdclick"
+if [ ! -e "${TARGET_HOME_DIR_PATH}/.cmdclick" ];then
+  git clone "https://github.com/kitamura-take/cmdclick.git" "${TARGET_HOME_DIR_PATH}/.cmdclick"
+fi
 sudo bash "${TARGET_HOME_DIR_PATH}/.cmdclick/linux/install/installer.sh"
 # difbk install
-git clone https://github.com/kitamura-take/difbk.git "${TARGET_HOME_DIR_PATH}/.difbk"
+if [ ! -e "${TARGET_HOME_DIR_PATH}/.difbk" ];then
+  git clone https://github.com/kitamura-take/difbk.git "${TARGET_HOME_DIR_PATH}/.difbk"
+fi
 sudo bash "${TARGET_HOME_DIR_PATH}/.difbk/install/install.sh" "l"
 # openvpn install
 sudo apt-get install openvpn -y && sudo apt-get install network-manager-openvpn -y && sudo apt-get install network-manager-openvpn-gnome -y
@@ -316,7 +320,7 @@ sudo cp -rvf "${SOURCE_IMAGES_WALLPAPERS_PATH}/${WALL_FILE_NAME}" "${TARGET_BACK
 sudo chmod +x "${TARGET_BACKGROUNDS_PATH}/${WALL_FILE_NAME}"
 sudo cp -rvf "${SOURCE_FILES_DIR_PATH}/${lightdm_greeter_conf}" "${lightdm_dir_path}/${lightdm_greeter_conf}"
 sudo chmod +x "${lightdm_dir_path}/${lightdm_greeter_conf}"
-sed -i "52i background = ${TARGET_BACKGROUNDS_PATH}/${WALL_FILE_NAME}" "${lightdm_dir_path}/${lightdm_greeter_conf}"
+sudo sed -i "52i background = ${TARGET_BACKGROUNDS_PATH}/${WALL_FILE_NAME}" "${lightdm_dir_path}/${lightdm_greeter_conf}"
 ## pcmanfm right click menu
 sudo mkdir -p ${TARGET_FILE_MANAGER_MENU_PATH}
 sudo cp -rvf ${SOURCE_FILE_MANAGER_MENU_PATH}/* "${TARGET_FILE_MANAGER_MENU_PATH}/"
@@ -339,12 +343,12 @@ echo -----front_terminal_start
 # ターミナル起動時に最前面に出るように設定
 google_list_how="$(echo "$(cat ${TARGET_HOME_DIR_PATH}/.bashrc | grep 'xdotool windowactivate $WINDOWID')")"
 if [ -z "${google_list_how}" ]; then
-  sed -i '$ a xdotool windowactivate $WINDOWID' "${TARGET_HOME_DIR_PATH}/.bashrc"
+  sudo sed -i '$ a xdotool windowactivate $WINDOWID' "${TARGET_HOME_DIR_PATH}/.bashrc"
 fi
 echo -----front_terminal_end
 # nemo actions setting
 echo "----nemo file manager setting_start"
-mkdir -p "${TARGET_NEMO_ACTIONS_PATH}"
+sudo mkdir -p "${TARGET_NEMO_ACTIONS_PATH}"
 sudo cp -arvf "${SOURCE_NEMO_ACTIONS_PATH}"/* "${TARGET_NEMO_ACTIONS_PATH}"/
 sudo chmod +x -R "${TARGET_NEMO_ACTIONS_PATH}"
 nemo_gschrma_xml_name="org.nemo.gschema.xml"
@@ -356,9 +360,9 @@ echo "----nemo file manager setting_end"
 # nemo istall (file manager)
 # nemo file-manager by nautilus folk(light weight)
 sudo apt install -y nemo
-xdg-mime default nemo.desktop inode/directory application/x-gnome-saved-search
-gsettings set org.gnome.desktop.background show-desktop-icons false
-gsettings set org.nemo.desktop show-desktop-icons true
+sudo xdg-mime default nemo.desktop inode/directory application/x-gnome-saved-search
+sudo gsettings set org.gnome.desktop.background show-desktop-icons false
+sudo gsettings set org.nemo.desktop show-desktop-icons true
 echo -----samba_settings_start
 ## samaba settings
 #samba共有ディレクトリ作成
@@ -400,7 +404,7 @@ echo check_charset_smb_cf_start
 samba_charset_how=$(echo "$(cat /etc/samba/smb.conf | grep "unix charset = UTF-8")")
 echo v_in
 if [  -z "${samba_charset_how}" ]; then
-  sed -i "25i\ \   dos charset = CP932\n   unix charset = UTF-8\n" /etc/samba/smb.conf
+  sudo sed -i "25i\ \   dos charset = CP932\n   unix charset = UTF-8\n" /etc/samba/smb.conf
 fi
 echo check_charset_smb_cf_end
 echo check_share_dir_smb_cf_start
@@ -480,7 +484,7 @@ if [ "${REMOTE_DESKTOP_INSTALL_CONFIRM}" = "y" ]; then
         sudo chown ${USER_NAME}:${USER_NAME} -R "${TARGET_HOME_DIR_PATH}/.profile"
         sudo chmod 777 -R "${TARGET_HOME_DIR_PATH}/.profile"
     fi
-    sed -i "11i pkill openbox" "${TARGET_HOME_DIR_PATH}/.profile"
+    sudo sed -i "11i pkill openbox" "${TARGET_HOME_DIR_PATH}/.profile"
   fi
   sudo sed -e 's/^new_cursors=true/new_cursors=false/g' -i "${rdp_ini_file_path}"
   rdp_exec_op_how="$(echo "$(cat "${rdp_start_wm_file}" | grep "exec openbox-session")")"
@@ -514,7 +518,7 @@ if [ "${SUBLIME_TEXT_INSTALL_CONFIRM}" = "y" ]; then
 fi
 #蓋を閉じても起動できる
 if [ "${POWER_ON_GET_LID_INSTALL_CONFIRM}" = "n" ]; then
-  sed -i "25i HandleLidSwitch=ignore" /etc/systemd/logind.conf
+  sudo sed -i "25i HandleLidSwitch=ignore" /etc/systemd/logind.conf
 fi
 ## wakeupon settiings
 #デバイス名取得

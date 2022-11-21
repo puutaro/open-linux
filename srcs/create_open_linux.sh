@@ -84,8 +84,6 @@ TARGET_NEMO_ACTIONS_PATH="/usr/share/nemo/actions"
 WALL_FILE_NAME=$(ls -l ${SOURCE_IMAGES_WALLPAPERS_PATH}  | tail -n 1 | awk '{print $9}')
 #ロゴファイル名取得
 LOGONAME=$(ls -l "${SOURCE_IMAGES_LOGO_PATH}"  | tail -n 1 | awk '{print $9}')
-
-
 #------------ premise settings & install -------------------
 #gnome系 nutilus系パッケージの削除
 ubuntu_uninstall ${G_DELETE_SWICH}
@@ -132,7 +130,9 @@ echo "install start"
 #openbox GUI
 #lxrandr：ディスプレイ  lxsession-logout:ログアウト menulibre:メニュ編集 lxrandr:ディスプレイ出力先
 #xfce4-power-manager:電源管理 blueman:ブルートゥース
-sudo apt install -y openbox lxsession-logout obconf lxpanel feh libappindicator3-1 menulibre lxrandr xfce4-power-manager blueman
+sudo apt install -y libayatana-appindicator3-1 \
+	|| sudo apt install -y libappindicator3-1
+sudo apt install -y openbox lxsession-logout obconf lxpanel feh menulibre lxrandr xfce4-power-manager blueman
 # 入力系、画面出力系インストール
 sudo apt install -y xorg 
 sudo apt install -y xserver-xorg
@@ -164,6 +164,7 @@ fi
 exist_fzf_source_cmd=$(\
   cat "${TARGET_HOME_DIR_PATH}/.bashrc" \
   | grep '\[ -f ~/.fzf.bash \] && source ~/.fzf.bash' \
+  || e=$? \
 )
 case "${exist_fzf_source_cmd}" in 
   "")
@@ -221,8 +222,18 @@ if [ $(ls ${LIB_MAKE_DIR} -l | wc -l) -eq 1 ]; then
   cd "${TARGET_HOME_DIR_PATH}"
 fi
 #shutter install
-sudo add-apt-repository -y ppa:linuxuprising/shutter
-sudo apt-get update -y
+how_version_2204_plus=$(\
+	cat /etc/os-release \
+	| awk '($0 ~ "VERSION_ID"){
+		gsub(".*=|\\.|\x22", "", $0)
+		if($0 >= 2204) print $0
+	}' \
+)
+case "${how_version_2204_plus}" in 
+ "") 
+ 	sudo add-apt-repository -y ppa:linuxuprising/shutter
+	sudo apt-get update -y
+;;esac
 sudo apt install -y shutter
 
 #gdrive mount install
@@ -431,7 +442,9 @@ if [ "${AUTO_LOGIN_CONFIRM}" = "n" ]; then
 fi
 #printer driver install
 if [ "${PRINTER_DRIVER_CONFIRM}" = "y" ]; then
-    sudo apt install -y system-config-printer-gnome system-config-printer-udev smbclient \
+    sudo apt install -y system-config-printer-gnome \
+    	|| sudo apt install -y system-config-printer system-config-printer-common 
+    sudo apt install -y system-config-printer-udev smbclient \
     cups cups-pk-helper cups-bsd cups-ppdc printer-driver-cups-pdf cups-browsed \
     foomatic-db-compressed-ppds \
     printer-driver-gutenprint \
@@ -473,30 +486,50 @@ if [ "${PLAY_ON_LINUX_INSTALL_CONFIRM}" = "y" ]; then
   sudo apt install playonlinux -y
 fi
 #リモートデスクトップ設定
-rdp_ini_file_path="/etc/xrdp/xrdp.ini"
-rdp_start_wm_file="/etc/xrdp/startwm.sh"
 if [ "${REMOTE_DESKTOP_INSTALL_CONFIRM}" = "y" ]; then
-  sudo apt install xrdp
-  xrdp_profile_kill_how="$(echo $(cat "${TARGET_HOME_DIR_PATH}/.profile" | grep "pkill openbox"))"
+  sudo apt install -y xrdp
+  xrdp_dir_path="/etc/xrdp"
+  exist_xrdp_dir=$(\
+    test -d "${xrdp_dir_path}" \
+      && echo "ari" \
+      || e=$?
+  )
+  test -z "${exist_xrdp_dir}" \
+    && mkdir -p "${exist_xrdp_dir}" \
+    || e=$?
+  set_profile_path="${TARGET_HOME_DIR_PATH}/.profile"
+  xrdp_profile_kill_how="$(echo $(cat "${set_profile_path}" | grep "pkill openbox" || e=$?))"
   if [ -z "${xrdp_profile_kill_how}" ]; then
-    if [ ! -e "${TARGET_HOME_DIR_PATH}/.profile" ]; then
-        cat /dev/null > "${TARGET_HOME_DIR_PATH}/.profile"
-        sudo chown ${USER_NAME}:${USER_NAME} -R "${TARGET_HOME_DIR_PATH}/.profile"
-        sudo chmod 777 -R "${TARGET_HOME_DIR_PATH}/.profile"
+    profile_insert_row=11
+    if [ ! -e "${set_profile_path}" ]; then
+        profile_insert_row=1
+        cat /dev/null > "${set_profile_path}"
+        sudo chown ${USER_NAME}:${USER_NAME} -R "${set_profile_path}"
+        sudo chmod 777 -R "${set_profile_path}"
     fi
-    sudo sed -i "11i pkill openbox" "${TARGET_HOME_DIR_PATH}/.profile"
+    sudo sed -i "$ a pkill openbox" "${set_profile_path}"
   fi
+  rdp_ini_file_path="${xrdp_dir_path}/xrdp.ini"
   sudo sed -e 's/^new_cursors=true/new_cursors=false/g' -i "${rdp_ini_file_path}"
-  rdp_exec_op_how="$(echo "$(cat "${rdp_start_wm_file}" | grep "exec openbox-session")")"
+  rdp_start_wm_file="${xrdp_dir_path}/startwm.sh"
+  rdp_exec_op_how="$(echo "$(cat "${rdp_start_wm_file}" | grep "exec openbox-session" || e=$?)")"
   if [ -z "${rdp_exec_op_how}" ]; then
-    sudo sed -i "33i pkill openbox" "${rdp_start_wm_file}"
-    sudo sed -i "34i export GTK_IM_MODULE=fcitx" "${rdp_start_wm_file}"
-    sudo sed -i "35i export QT_IM_MODULE=fcitx" "${rdp_start_wm_file}"
-    sudo sed -i "36i export XMODIFIERS=\"@im=fcitx\"" "${rdp_start_wm_file}"
-    sudo sed -i "37i export DefaultIMModule=fcitx" "${rdp_start_wm_file}"
-    sudo sed -i "38i fcitx" "${rdp_start_wm_file}"
-    sudo sed -i "39i unset DBUS_SESSION_BUS_ADDRESS" "${rdp_start_wm_file}"
-    sudo sed -i "40i exec openbox-session"  "${rdp_start_wm_file}"
+    start_wm_row="$(cat "${rdp_start_wm_file}" | grep -n "/etc/X11/Xsession" | head -1 | grep -oE "^[0-9]{1,4}" || e=$?)"
+    sudo sed -i "${start_wm_row}i pkill openbox" "${rdp_start_wm_file}"
+    start_wm_row="$(( ${start_wm_row} + 1 ))"
+    sudo sed -i "${start_wm_row}i export GTK_IM_MODULE=fcitx" "${rdp_start_wm_file}"
+    start_wm_row="$(( ${start_wm_row} + 1 ))"
+    sudo sed -i "${start_wm_row}i export QT_IM_MODULE=fcitx" "${rdp_start_wm_file}"
+    start_wm_row="$(( ${start_wm_row} + 1 ))"
+    sudo sed -i "${start_wm_row}i export XMODIFIERS=\"@im=fcitx\"" "${rdp_start_wm_file}"
+    start_wm_row="$(( ${start_wm_row} + 1 ))"
+    sudo sed -i "${start_wm_row}i export DefaultIMModule=fcitx" "${rdp_start_wm_file}"
+    start_wm_row="$(( ${start_wm_row} + 1 ))"
+    sudo sed -i "${start_wm_row}i fcitx" "${rdp_start_wm_file}"
+    start_wm_row="$(( ${start_wm_row} + 1 ))"
+    sudo sed -i "${start_wm_row}i unset DBUS_SESSION_BUS_ADDRESS" "${rdp_start_wm_file}"
+    start_wm_row="$(( ${start_wm_row} + 1 ))"
+    sudo sed -i "${start_wm_row}i exec openbox-session"  "${rdp_start_wm_file}"
     sudo systemctl restart xrdp
   fi
 fi

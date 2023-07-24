@@ -6,9 +6,6 @@ if [ "${STARTNUM}" -eq "1" ]; then
       xinput --list --name-only \
         | grep -i  -e touchpad -e glidepoint -e trackpad\
   )
-  log_path="${HOME}/startup_log.txt"
-  echo "touch_device_name ${touch_device_name}" \
-    > "${log_path}"
   update_startup_con=$(\
       awk -v touch_device_name="${touch_device_name}" \
       '{

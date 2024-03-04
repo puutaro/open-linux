@@ -15,13 +15,15 @@ SOURCE_DIR_PATH=$(dirname $0)
 #-------------------------------------
 
 #--------- CONFIRM -------------
-ALL_QUESTION_TIMES=13
+ALL_QUESTION_TIMES=14
 ALL_QUESTION_SEED_TIMES=1
 
 #ユーザー名入力画面,アンインストール、インストールパッケージ確認
 confirm_username_dialog ${ALL_QUESTION_TIMES}
 uninstall_dialog ${ALL_QUESTION_TIMES} "Gnome and Naulilus(重いパッケージを削除)"
 G_DELETE_SWICH=${CONFIRM}
+install_dialog ${ALL_QUESTION_TIMES} "Create Samba Share folda (Samba で共有フォルダを作る)"
+SAMBA_SETTING_CONFIRM=${CONFIRM}
 setting_dialog ${ALL_QUESTION_TIMES} "no netplan settings (ネットプランの設定をしない)"
 NO_NETPLAN_SETTING_CONFIRM=${CONFIRM}
 setting_dialog ${ALL_QUESTION_TIMES} "auto login (openboxセッションへ自動ログインできる設定)"
@@ -289,7 +291,7 @@ if [ -n "${TOUCHPAD_DEVICE_NAME}" ]; then
   sudo sed -i "s|CURRENT_TOCHPAD_DEVICE_NAME|${TOUCHPAD_DEVICE_NAME}|g" "${TARGET_HOME_DIR_PATH}/startup.sh"
 fi
 sudo chown ${USER_NAME}:${USER_NAME} -R "${TARGET_HOME_DIR_PATH}/startup.sh"
-sudo chmod 777 -R "${TARGET_HOME_DIR_PATH}/startup.sh"
+sudo chmod 777 "${TARGET_HOME_DIR_PATH}/startup.sh"
 #ディスプレイ解像度設定
 DISPLAY_RESOLUTION="$(echo $(xrandr | head -n 3 | tail -n -1 | awk '{print $1}'))"
 if [ -n "${DISPLAY_RESOLUTION}" ]; then
@@ -297,7 +299,7 @@ if [ -n "${DISPLAY_RESOLUTION}" ]; then
 fi
 sudo sed -i "s|CURRENT_USER_NAME|${USER_NAME}|g" "${TARGET_OPENBOX_PATH}/rc.xml"
 sudo chown ${USER_NAME}:${USER_NAME} -R "${TARGET_OPENBOX_PATH}/rc.xml"
-sudo chmod 777 -R "${TARGET_OPENBOX_PATH}/rc.xml"
+sudo chmod 777 "${TARGET_OPENBOX_PATH}/rc.xml"
 #.config直下コピー
 sudo cp -arvf "${SOURCE_CONFIG_PATH}/." "${TARGET_CONFIG_PATH}/"
 #権限委譲
@@ -307,7 +309,7 @@ sudo chmod 777 -R "${TARGET_CONFIG_PATH}"
 thunar_right_click_menu_file="uca.xml"
 TARGET_THUNAR_PATH="${TARGET_CONFIG_PATH}/Thunar"
 sudo chown ${USER_NAME}:${USER_NAME} -R "${TARGET_THUNAR_PATH}/uca.xml"
-sudo chmod 777 -R "${TARGET_THUNAR_PATH}/uca.xml"
+sudo chmod 777 "${TARGET_THUNAR_PATH}/uca.xml"
 #lxpanel設定
 sudo mkdir -p ${TARGET_IMAGES_LOGO_PATH}
 sudo cp -rvf "${SOURCE_FILES_DIR_PATH}/panel" "${TARGET_IMAGES_LOGO_PATH}/panel"
@@ -357,6 +359,7 @@ if [ -z "${google_list_how}" ]; then
   sudo sed -i '$ a xdotool windowactivate $WINDOWID' "${TARGET_HOME_DIR_PATH}/.bashrc"
 fi
 echo -----front_terminal_end
+
 # nemo actions setting
 echo "----nemo file manager setting_start"
 sudo mkdir -p "${TARGET_NEMO_ACTIONS_PATH}"
@@ -374,61 +377,65 @@ sudo apt install -y nemo
 sudo xdg-mime default nemo.desktop inode/directory application/x-gnome-saved-search
 sudo gsettings set org.gnome.desktop.background show-desktop-icons false
 sudo gsettings set org.nemo.desktop show-desktop-icons true
-echo -----samba_settings_start
-## samaba settings
-#samba共有ディレクトリ作成
-MK_SHARE_DIR=0
-SHARE_DIR_NAME="/home/${USER_NAME}/Desktop/share"
-echo share_dire_check_start
-if [ -d /home/${USER_NAME}/デスクトップ ]; then
-  SHARE_DIR_NAME="/home/${USER_NAME}/デスクトップ/share"
-  echo "share_dir: ${SHARE_DIR_NAME}"
-  mkdir -p ${SHARE_DIR_NAME}
-  MK_SHARE_DIR=1
-  echo ja_desktop
-elif [ -d /home/${USER_NAME}/Desktop ]; then
+
+
+if [ ${SAMBA_SETTING_CONFIRM} = "y" ];then
+  echo -----samba_settings_start
+  ## samaba settings
+  #samba共有ディレクトリ作成
+  MK_SHARE_DIR=0
   SHARE_DIR_NAME="/home/${USER_NAME}/Desktop/share"
+  echo share_dire_check_start
+  if [ -d /home/${USER_NAME}/デスクトップ ]; then
+    SHARE_DIR_NAME="/home/${USER_NAME}/デスクトップ/share"
+    echo "share_dir: ${SHARE_DIR_NAME}"
+    mkdir -p ${SHARE_DIR_NAME}
+    MK_SHARE_DIR=1
+    echo ja_desktop
+  elif [ -d /home/${USER_NAME}/Desktop ]; then
+    SHARE_DIR_NAME="/home/${USER_NAME}/Desktop/share"
+    echo "share_dir: ${SHARE_DIR_NAME}"
+    mkdir -p ${SHARE_DIR_NAME}
+    MK_SHARE_DIR=1
+    echo en_desktop
+  fi
+  echo share_dire_check_end
+  echo share_dire_make_start
+  if [ ${MK_SHARE_DIR} -eq 0 ]; then
+    mkdir -p ${SHARE_DIR_NAME}
+    echo mk_share_dir
+  fi
+  echo share_dire_make_end
   echo "share_dir: ${SHARE_DIR_NAME}"
-  mkdir -p ${SHARE_DIR_NAME}
-  MK_SHARE_DIR=1
-  echo en_desktop
+  share_dir_blank=$(ls | wc -l)
+  # if [ ${share_dir_blank} -eq 0 ]; then
+  #   sudo chown ${USER_NAME}:${USER_NAME} -R ${SHARE_DIR_NAME}
+  #   echo chmod
+  #   sudo chmod 777 -R ${SHARE_DIR_NAME}
+  # elif [ ${share_dir_blank} -ge 1 ]; then
+  #   sudo chown ${USER_NAME}:${USER_NAME} ${SHARE_DIR_NAME}
+  #   echo chmod
+  #   sudo chmod 777 ${SHARE_DIR_NAME}
+  # fi
+  echo check_charset_smb_cf_start
+  samba_charset_how=$(echo "$(cat /etc/samba/smb.conf | grep "unix charset = UTF-8")")
+  echo v_in
+  if [  -z "${samba_charset_how}" ]; then
+    sudo sed -i "25i\ \   dos charset = CP932\n   unix charset = UTF-8\n" /etc/samba/smb.conf
+  fi
+  echo check_charset_smb_cf_end
+  echo check_share_dir_smb_cf_start
+  samba_share_dir_how="$(echo $(cat /etc/samba/smb.conf | grep "${SHARE_DIR_NAME}"))"
+  echo v_in
+  # if [ -z "${samba_share_dir_how}" ]; then
+    sudo cat "${SOURCE_FILES_DIR_PATH}/smb.conf" >>  /etc/samba/smb.conf
+    sudo sed -i "s|CURRENT_SHARE_DIR_NAME|${SHARE_DIR_NAME}|g" /etc/samba/smb.conf
+    sudo systemctl restart smbd nmbd
+    sudo systemctl enable smbd nmbd
+  # fi
+  echo check_share_dir_smb_cf_end
+  echo -----samba_settings_end
 fi
-echo share_dire_check_end
-echo share_dire_make_start
-if [ ${MK_SHARE_DIR} -eq 0 ]; then
-  mkdir -p ${SHARE_DIR_NAME}
-  echo mk_share_dir
-fi
-echo share_dire_make_end
-echo "share_dir: ${SHARE_DIR_NAME}"
-share_dir_blank=$(ls | wc -l)
-if [ ${share_dir_blank} -eq 0 ]; then
-  sudo chown ${USER_NAME}:${USER_NAME} -R ${SHARE_DIR_NAME}
-  echo chmod
-  sudo chmod 777 -R ${SHARE_DIR_NAME}
-elif [ ${share_dir_blank} -ge 1 ]; then
-  sudo chown ${USER_NAME}:${USER_NAME} ${SHARE_DIR_NAME}
-  echo chmod
-  sudo chmod 777 ${SHARE_DIR_NAME}
-fi
-echo check_charset_smb_cf_start
-samba_charset_how=$(echo "$(cat /etc/samba/smb.conf | grep "unix charset = UTF-8")")
-echo v_in
-if [  -z "${samba_charset_how}" ]; then
-  sudo sed -i "25i\ \   dos charset = CP932\n   unix charset = UTF-8\n" /etc/samba/smb.conf
-fi
-echo check_charset_smb_cf_end
-echo check_share_dir_smb_cf_start
-samba_share_dir_how="$(echo $(cat /etc/samba/smb.conf | grep "${SHARE_DIR_NAME}"))"
-echo v_in
-if [ -z "${samba_share_dir_how}" ]; then
-  sudo cat "${SOURCE_FILES_DIR_PATH}/smb.conf" >>  /etc/samba/smb.conf
-  sudo sed -i "s|CURRENT_SHARE_DIR_NAME|${SHARE_DIR_NAME}|g" /etc/samba/smb.conf
-  sudo systemctl restart smbd nmbd
-  sudo systemctl enable smbd nmbd
-fi
-echo check_share_dir_smb_cf_end
-echo -----samba_settings_end
 #------------- setting end --------------------
 
 #------------- option --------------------------
@@ -505,7 +512,7 @@ if [ "${REMOTE_DESKTOP_INSTALL_CONFIRM}" = "y" ]; then
         profile_insert_row=1
         cat /dev/null > "${set_profile_path}"
         sudo chown ${USER_NAME}:${USER_NAME} -R "${set_profile_path}"
-        sudo chmod 777 -R "${set_profile_path}"
+        sudo chmod 777 "${set_profile_path}"
     fi
     sudo sed -i "$ a pkill openbox" "${set_profile_path}"
   fi
@@ -544,10 +551,10 @@ if [ "${SUBLIME_TEXT_INSTALL_CONFIRM}" = "y" ]; then
   sudo mkdir -p "${TARGET_CONFIG_PATH}/${sublime_user_dir_path}"
   sudo cp -rvf "${SOURCE_FILES_DIR_PATH}/${sublime_preferece_file_name}" "${TARGET_CONFIG_PATH}/${sublime_user_dir_path}/"
   sudo chown ${USER_NAME}:${USER_NAME} -R "${TARGET_CONFIG_PATH}/${sublime_user_dir_path}/${sublime_preferece_file_name}"
-  sudo chmod 777 -R "${TARGET_CONFIG_PATH}/${sublime_user_dir_path}/${sublime_preferece_file_name}"
+  sudo chmod 777 "${TARGET_CONFIG_PATH}/${sublime_user_dir_path}/${sublime_preferece_file_name}"
   sudo cp -rvf "${SOURCE_FILES_DIR_PATH}/${sublime_key_map_file_name}" "${TARGET_CONFIG_PATH}/${sublime_user_dir_path}/"
   sudo chown ${USER_NAME}:${USER_NAME} -R "${TARGET_CONFIG_PATH}/${sublime_user_dir_path}/${sublime_key_map_file_name}"
-  sudo chmod 777 -R "${TARGET_CONFIG_PATH}/${sublime_user_dir_path}/${sublime_key_map_file_name}"
+  sudo chmod 777 "${TARGET_CONFIG_PATH}/${sublime_user_dir_path}/${sublime_key_map_file_name}"
 fi
 #蓋を閉じても起動できる
 if [ "${POWER_ON_GET_LID_INSTALL_CONFIRM}" = "n" ]; then

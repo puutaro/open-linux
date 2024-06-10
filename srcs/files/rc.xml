@@ -438,12 +438,17 @@
     </keybind>
     <keybind key="W-E">
       <action name="Execute">
-        <command>sh /home/CURRENT_USER_NAME/myapp/nemo.sh</command>
+        <command>sh /home/CURRENT_USER_NAME/myapp/nemo.sh active</command>
+      </action>
+    </keybind>
+    <keybind key="W-x">
+      <action name="Execute">
+        <command>sh /home/CURRENT_USER_NAME/myapp/ccerimnal.sh</command>
       </action>
     </keybind>
     <keybind key="W-S-e">
       <action name="Execute">
-        <command>sh /home/CURRENT_USER_NAME/myapp/nemo.sh active</command>
+        <command>sh /home/CURRENT_USER_NAME/myapp/nemo.sh</command>
       </action>
     </keybind>
     <keybind key="W-Muhenkan">

@@ -1,13 +1,14 @@
 1,xbabu(ユーザー名),y
-2,Gnome and Naulilus(重いパッケージを削除),n
-3,no netplan settings (ネットプランの設定をしない),y
-4,auto login (openboxセッションへ自動ログインできる設定),y
-5,No Power on gedlid (蓋を閉じても起動できる設定をしない),y
-6,Wake up On Lan (LANからPCを起動できる設定),n
-7,Printer driver (linux対応プリンタを使えるようにする),n
-8,Libre Office (linuxでも使えるオフィスツール),y
-9,LXD (Linux専用コンテナマネージャ),y
-10,Kvm and Qenu (Linux用仮想環境),y
-11,PlayOnLinux (windowsアプリ(kindle等)が楽しめる),y
-12,Remote Desktop (リモートデスクトップ),y
-13,Sublime text (開発用の軽量エディタ),y
+2,Gnome and Naulilus(重いパッケージを削除),y
+3,Create Samba Share folda (Samba で共有フォルダを作る),n
+4,no netplan settings (ネットプランの設定をしない),y
+5,auto login (openboxセッションへ自動ログインできる設定),y
+6,No Power on gedlid (蓋を閉じても起動できる設定をしない),y
+7,Wake up On Lan (LANからPCを起動できる設定),n
+8,Printer driver (linux対応プリンタを使えるようにする),y
+9,Libre Office (linuxでも使えるオフィスツール),y
+10,LXD (Linux専用コンテナマネージャ),y
+11,Kvm and Qenu (Linux用仮想環境),y
+12,PlayOnLinux (windowsアプリ(kindle等)が楽しめる),y
+13,Remote Desktop (リモートデスクトップ),y
+14,Sublime text (開発用の軽量エディタ),y

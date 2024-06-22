@@ -1,4 +1,5 @@
 #!bin/bash
+alsactl init
 sleep 5
 STARTNUM=1
 if [ "${STARTNUM}" -eq "1" ]; then

@@ -453,7 +453,7 @@
     </keybind>
     <keybind key="W-Muhenkan">
       <action name="Execute">
-        <command>sh /home/CURRENT_USER_NAME/myapp/up.sh</command>
+        <command>sh /home/CURRENT_USER_NAME/myapp/search.sh</command>
       </action>
     </keybind>
     <keybind key="C-space">
@@ -473,7 +473,7 @@
     </keybind>
     <keybind key="Muhenkan">
       <action name="Execute">
-        <command>sh /home/CURRENT_USER_NAME/myapp/down.sh</command>
+        <command>sh /home/CURRENT_USER_NAME/myapp/right_click.sh</command>
       </action>
     </keybind>
     <keybind key="W-a">

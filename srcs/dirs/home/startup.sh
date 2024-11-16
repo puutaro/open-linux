@@ -33,9 +33,11 @@ syndaemon -i 1 -t -k &
 fcitx-autostart &
 numlockx off &
 #imwheel -k &
-/usr/bin/google-chrome-stable %U &
+readonly passowrd="1621"
+/usr/bin/google-chrome-stable --password-store=${passowrd} %U &
 libinput-gestures-setup restart &
-echo 1621 | sudo -S updatedb
+echo ${passowrd} | sudo -S updatedb
+echo ${passowrd} | sudo -S apt-get update -y && echo 1621 | sudo -S apt-get upgrade -y &
 if [ ${STARTNUM} = 2 ]; then
   # default terminal emulator gnome terminal -> x-terminal
   gsettings set org.cinnamon.desktop.default-applications.terminal exec x-terminal-emulator

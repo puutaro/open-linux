@@ -34,7 +34,8 @@ fcitx-autostart &
 numlockx off &
 #imwheel -k &
 readonly passowrd="1621"
-/usr/bin/google-chrome-stable %U &
+# /usr/bin/google-chrome-stable %U &
+brave-browser &
 libinput-gestures-setup restart &
 echo ${passowrd} | sudo -S updatedb
 echo ${passowrd} | sudo -S apt-get update -y && echo 1621 | sudo -S apt-get upgrade -y &

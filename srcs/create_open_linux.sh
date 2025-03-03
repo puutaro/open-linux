@@ -167,7 +167,8 @@ sudo apt-get install -y fcitx-config-gtk
 # commnt out thunar  thunar-archive-plugin
 # rhythmbox : musicplayer
 # cursor theme oxygen-cursor-theme oxygen-cursor-theme-extra
-sudo apt-get install -y pcmanfm xinput xinit nano synapse alacarte curl tlp tlp-rdw powertop git seahorse gnome-disk-utility xfce4-terminal xfce4-taskmanager dex snapd imwheel gufw xorgxrdp vino obconf numlockx samba gdebi gparted cifs-utils smbclient gnome-disk-utility wget mtools gimp file-roller lxpolkit mousepad lxinput catfish yad gdb nkf zip unzip rename lxc-utils jq openssh-client netdiscover fd-find colordiff rcs rhythmbox gsettings-desktop-schemas-dev oxygen-cursor-theme oxygen-cursor-theme-extra
+# dconf-editor: setting
+sudo apt-get install -y pcmanfm xinput xinit nano synapse alacarte curl tlp tlp-rdw powertop git seahorse gnome-disk-utility xfce4-terminal xfce4-taskmanager dex snapd imwheel gufw xorgxrdp vino obconf numlockx samba gdebi gparted cifs-utils smbclient gnome-disk-utility wget mtools gimp file-roller lxpolkit mousepad lxinput catfish yad gdb nkf zip unzip rename lxc-utils jq openssh-client netdiscover fd-find colordiff rcs rhythmbox gsettings-desktop-schemas-dev oxygen-cursor-theme oxygen-cursor-theme-extra dconf-editor
 # set git alias
 git config --global alias.s status
 git config --global alias.d diff

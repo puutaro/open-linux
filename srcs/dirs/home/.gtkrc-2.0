@@ -1,11 +1,11 @@
 # DO NOT EDIT! This file will be overwritten by LXAppearance.
 # Any customization should be done in ~/.gtkrc-2.0.mine instead.
 
-include "/home/haumi/.gtkrc-2.0.mine"
+include "TARGET_HOME_DIR_PATH/.gtkrc-2.0.mine"
 gtk-theme-name="Adwaita"
-gtk-icon-theme-name="Mint-Y-Dark"
+gtk-icon-theme-name="Mint-Y"
 gtk-font-name="メイリオ 13"
-gtk-cursor-theme-name="lil-polar"
+gtk-cursor-theme-name="oxy-oxygen"
 gtk-cursor-theme-size=0
 gtk-toolbar-style=GTK_TOOLBAR_ICONS
 gtk-toolbar-icon-size=GTK_ICON_SIZE_BUTTON

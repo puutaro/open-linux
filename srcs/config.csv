@@ -1,6 +1,6 @@
 1,xbabu(ユーザー名),y
-2,Gnome and Naulilus(重いパッケージを削除),y
-3,Create Samba Share folda (Samba で共有フォルダを作る),n
+2,Gnome and Naulilus(重いパッケージを削除),n
+3,Create Samba Share folda (Samba で共有フォルダを作る),y
 4,no netplan settings (ネットプランの設定をしない),y
 5,auto login (openboxセッションへ自動ログインできる設定),y
 6,No Power on gedlid (蓋を閉じても起動できる設定をしない),y

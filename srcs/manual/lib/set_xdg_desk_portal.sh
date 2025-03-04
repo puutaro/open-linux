@@ -20,13 +20,12 @@ scriptFileName=set_xdg_desk_portal.sh
 
 
 ### CMD_VARIABLE_SECTION_START
-SWITCH=OUT
+SWITCH=INNER
 ### CMD_VARIABLE_SECTION_END
 
 
 ### Please write bellow with shell script
 
- 
 readonly SERVICE_PATH="/usr/lib/systemd/user/xdg-desktop-portal-gtk.service"
 # [Service]
 # --> Environment="DISPLAY=:10.0"
@@ -34,12 +33,12 @@ function switch_display_num(){
 	local display_num="${2}"
 	if [ -z "${DISPLAY_ENV}" ];then
 		sudo \
-			sed -i "$ a Environment=\"DISPLAY=${display_num}\"" \
+			sed -i "$ a Environment=\"DISPLAY=:${display_num}\"" \
 			"${SERVICE_PATH}"
 		return
 	fi
 	sudo \
-		sed -i "s/Environment=\"DISPLAY=.*\"/Environment=\"DISPLAY=${display_num}\"/" \
+		sed -i "s/Environment=\"DISPLAY=.*\"/Environment=\"DISPLAY=:${display_num}\"/" \
 			"${SERVICE_PATH}"
 }
 readonly CUR_SERVICE_CON=$(\
@@ -61,6 +60,7 @@ case "${SWITCH}" in
 			"0.0"
 		;;
 esac
+
 
 systemctl --user restart  xdg-desktop-portal
 systemctl --user status  xdg-desktop-portal

@@ -4,7 +4,7 @@
 include "TARGET_HOME_DIR_PATH/.gtkrc-2.0.mine"
 gtk-theme-name="Adwaita"
 gtk-icon-theme-name="Mint-Y"
-gtk-font-name="メイリオ 13"
+gtk-font-name="メイリオ 20"
 gtk-cursor-theme-name="oxy-oxygen"
 gtk-cursor-theme-size=0
 gtk-toolbar-style=GTK_TOOLBAR_ICONS

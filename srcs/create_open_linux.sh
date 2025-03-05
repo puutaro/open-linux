@@ -87,7 +87,13 @@ readonly TARGET_NEMO_ACTIONS_PATH="/usr/share/nemo/actions"
 readonly WALL_FILE_NAME=$(ls -l ${SOURCE_IMAGES_WALLPAPERS_PATH}  | tail -n 1 | awk '{print $9}')
 #ロゴファイル名取得
 readonly LOGONAME=$(ls -l "${SOURCE_IMAGES_LOGO_PATH}"  | tail -n 1 | awk '{print $9}')
-#ubuntu versionが2404以上か
+readonly HOW_VERSION_2204_PLUS=$(\
+  cat /etc/os-release \
+  | awk '($0 ~ "VERSION_ID"){
+    gsub(".*=|\\.|\x22", "", $0)
+    if($0 >= 2204) print $0
+  }' \
+)
 readonly HOW_VERSION_2404_PLUS=$(\
   cat /etc/os-release \
   | awk '($0 ~ "VERSION_ID"){
@@ -170,7 +176,13 @@ sudo apt-get install -y fcitx-config-gtk
 # dconf-editor: setting
 # file chooser for os: xdg-desktop-portal-lxqt
 # for zeitgeist-daemon.vala: zeitgeist
-sudo apt-get install -y pcmanfm xinput xinit nano synapse alacarte curl tlp tlp-rdw powertop git seahorse gnome-disk-utility xfce4-terminal xfce4-taskmanager dex snapd imwheel gufw xorgxrdp vino obconf numlockx samba gdebi gparted cifs-utils smbclient gnome-disk-utility wget mtools gimp file-roller lxpolkit mousepad lxinput catfish yad gdb nkf zip unzip rename lxc-utils jq openssh-client netdiscover fd-find colordiff rcs rhythmbox gsettings-desktop-schemas-dev oxygen-cursor-theme oxygen-cursor-theme-extra dconf-editor xdg-desktop-portal-lxqt zeitgeist
+sudo apt-get install -y pcmanfm xinput xinit nano synapse alacarte curl tlp tlp-rdw powertop git seahorse gnome-disk-utility xfce4-terminal xfce4-taskmanager dex snapd imwheel gufw xorgxrdp vino obconf numlockx samba gdebi gparted cifs-utils smbclient gnome-disk-utility wget mtools gimp file-roller lxpolkit mousepad lxinput catfish yad gdb nkf zip unzip rename lxc-utils jq openssh-client netdiscover fd-find colordiff rcs rhythmbox gsettings-desktop-schemas-dev oxygen-cursor-theme oxygen-cursor-theme-extra dconf-editor
+# file chooser for ubuntu 2204 over becuase gnone spec change
+case "${HOW_VERSION_2204_PLUS}" in
+  "") ;;
+  *)
+    sudo apt-get install -y xdg-desktop-portal-lxqt zeitgeist
+;;esac
 # set git alias
 git config --global alias.s status
 git config --global alias.d diff
@@ -278,14 +290,7 @@ case "${HOW_VERSION_2404_PLUS}" in
 esac
 
 #shutter install
-readonly how_version_2204_plus=$(\
-	cat /etc/os-release \
-	| awk '($0 ~ "VERSION_ID"){
-		gsub(".*=|\\.|\x22", "", $0)
-		if($0 >= 2204) print $0
-	}' \
-)
-case "${how_version_2204_plus}" in 
+case "${HOW_VERSION_2204_PLUS}" in 
  "") 
  	sudo add-apt-repository -y ppa:linuxuprising/shutter
 	sudo apt-get update -y

@@ -83,6 +83,7 @@ readonly TARGET_ICON_THEME_PATH="/usr/share/icons"
 readonly TARGET_USRLOCALBIN_PATH="/usr/local/bin"
 readonly TARGET_NETPLAN_DIR_PATH="/etc/netplan"
 readonly TARGET_NEMO_ACTIONS_PATH="/usr/share/nemo/actions"
+readonly HOME_PROFILE_PATH="${TARGET_HOME_DIR_PATH}/.profile"
 #壁紙名取得
 readonly WALL_FILE_NAME=$(ls -l ${SOURCE_IMAGES_WALLPAPERS_PATH}  | tail -n 1 | awk '{print $9}')
 #ロゴファイル名取得
@@ -160,8 +161,15 @@ sudo apt-get install -y xserver-xorg-input-evdev xserver-xorg-input-mouse
 sudo apt-get install -y xserver-xorg-input-synaptics
 
 #日本語入力
-sudo apt-get install -y --install-recommends fcitx fcitx-mozc
-sudo apt-get install -y fcitx-config-gtk
+case "${HOW_VERSION_2404_PLUS}" in
+  "")
+    sudo apt-get install -y --install-recommends fcitx fcitx-mozc
+    ;;
+  *)
+    sudo apt-get install fcitx5 fcitx5-mozc -y
+    ;;
+esac
+# sudo apt-get install -y fcitx-config-gtk
 
 #xinput：入力 xinit：RDP時に初期設定で必要 seahorse:鍵とパスワードの管理 gnome-disk-utility:usbメモリ初期化
 #file-roller:GUIメニューで圧縮ファイル展開 gdebi:dpkg展開インストール xrdp:remote desktop 
@@ -174,14 +182,16 @@ sudo apt-get install -y fcitx-config-gtk
 # rhythmbox : musicplayer
 # cursor theme oxygen-cursor-theme oxygen-cursor-theme-extra
 # dconf-editor: setting
-# file chooser for os: xdg-desktop-portal-lxqt
-# for zeitgeist-daemon.vala: zeitgeist
 sudo apt-get install -y pcmanfm xinput xinit nano synapse alacarte curl tlp tlp-rdw powertop git seahorse gnome-disk-utility xfce4-terminal xfce4-taskmanager dex snapd imwheel gufw xorgxrdp vino obconf numlockx samba gdebi gparted cifs-utils smbclient gnome-disk-utility wget mtools gimp file-roller lxpolkit mousepad lxinput catfish yad gdb nkf zip unzip rename lxc-utils jq openssh-client netdiscover fd-find colordiff rcs rhythmbox gsettings-desktop-schemas-dev oxygen-cursor-theme oxygen-cursor-theme-extra dconf-editor
 # file chooser for ubuntu 2204 over becuase gnone spec change
 case "${HOW_VERSION_2204_PLUS}" in
   "") ;;
   *)
-    sudo apt-get install -y xdg-desktop-portal-lxqt zeitgeist
+    # file chooser for os: xdg-desktop-portal-lxqt
+    # for zeitgeist-daemon.vala: zeitgeist
+    e=""
+    sudo apt-get install -y xdg-desktop-portal-lxqt || e=$?
+    sudo apt-get install -y zeitgeist
 ;;esac
 # set git alias
 git config --global alias.s status
@@ -421,6 +431,11 @@ if [ -z "${google_list_how}" ]; then
 fi
 echo -----front_terminal_end
 
+# install rust
+sudo chown ${USER_NAME}:${USER_NAME} -R "${HOME_PROFILE_PATH}"
+sudo chmod 777 -R "${HOME_PROFILE_PATH}"
+su -c "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y" - ${USER_NAME}
+
 # nemo actions setting
 echo "----nemo file manager setting_start"
 sudo mkdir -p "${TARGET_NEMO_ACTIONS_PATH}"
@@ -583,26 +598,26 @@ if [ "${REMOTE_DESKTOP_INSTALL_CONFIRM}" = "y" ]; then
   test -z "${exist_xrdp_dir}" \
     && mkdir -p "${exist_xrdp_dir}" \
     || e=$?
-  readonly set_profile_path="${TARGET_HOME_DIR_PATH}/.profile"
-  readonly xrdp_profile_kill_how="$(echo $(cat "${set_profile_path}" | grep "pkill openbox" || e=$?))"
+  readonly xrdp_profile_kill_how="$(echo $(cat "${HOME_PROFILE_PATH}" | grep "pkill openbox" || e=$?))"
   if [ -z "${xrdp_profile_kill_how}" ]; then
     profile_insert_row=11
-    if [ ! -e "${set_profile_path}" ]; then
+    if [ ! -e "${HOME_PROFILE_PATH}" ]; then
         profile_insert_row=1
-        cat /dev/null > "${set_profile_path}"
-        sudo chown ${USER_NAME}:${USER_NAME} -R "${set_profile_path}"
-        sudo chmod 777 "${set_profile_path}"
+        cat /dev/null > "${HOME_PROFILE_PATH}"
+        sudo chown ${USER_NAME}:${USER_NAME} -R "${HOME_PROFILE_PATH}"
+        sudo chmod 777 "${HOME_PROFILE_PATH}"
     fi
-    sudo sed -i "$ a pkill openbox" "${set_profile_path}"
+    sudo sed -i "$ a pkill openbox" "${HOME_PROFILE_PATH}"
   fi
-  # 日本語入力設定
-  #Added by https://astherier.com/blog/2020/08/install-fcitx-mozc-on-wsl2-ubuntu2004/
-  case "$(\
-    cat "${set_profile_path}" \
-      | grep "DefaultIMModule=fcitx"\
-    )" in
-  "")
-  cat << EOS >> "${set_profile_path}"
+  if [ -z "${HOW_VERSION_2404_PLUS}" ]; then
+    # 日本語入力設定
+    #Added by https://astherier.com/blog/2020/08/install-fcitx-mozc-on-wsl2-ubuntu2004/
+    case "$(\
+      cat "${HOME_PROFILE_PATH}" \
+        | grep "DefaultIMModule=fcitx"\
+      )" in
+    "")
+      cat << EOS >> "${HOME_PROFILE_PATH}"
 export GTK_IM_MODULE=xim
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
@@ -612,13 +627,35 @@ if [ \$SHLVL = 1 ] ; then
   xset -r 49  > /dev/null 2>&1
 fi
 EOS
-    ;;
-  esac
+      ;;
+    esac
+  else
+    case "$(\
+        cat "${HOME_PROFILE_PATH}" \
+          | grep "DefaultIMModule=fcitx5"\
+        )" in
+    "")
+      cat << EOS >> "${HOME_PROFILE_PATH}"
+while true; do
+  dbus-update-activation-environment --systemd DBUS_SESSION_BUS_ADDRESS DISPLAY XAUTHORITY 2> /dev/null && break
+done
+export GTK_IM_MODULE=fcitx5
+export QT_IM_MODULE=fcitx5
+export XMODIFIERS=@im=fcitx5
+export DefaultIMModule=fcitx5
+if [ \$SHLVL = 1 ] ; then
+  (fcitx5 --disable=wayland -d --verbose '*'=0 &)
+  xset -r 49  > /dev/null 2>&1
+fi
+EOS
+    ;; 
+    esac
+  fi
   readonly rdp_ini_file_path="${xrdp_dir_path}/xrdp.ini"
   sudo sed -e 's/^new_cursors=true/new_cursors=false/g' -i "${rdp_ini_file_path}"
   readonly rdp_start_wm_file="${xrdp_dir_path}/startwm.sh"
   readonly rdp_exec_op_how="$(echo "$(cat "${rdp_start_wm_file}" | grep "exec openbox-session" || e=$?)")"
-  if [ -z "${rdp_exec_op_how}" ]; then
+  if [ -z "${rdp_exec_op_how}" ] && [ -z ${HOW_VERSION_2404_PLUS} ]; then
     start_wm_row="$(cat "${rdp_start_wm_file}" | grep -n "/etc/X11/Xsession" | head -1 | grep -oE "^[0-9]{1,4}" || e=$?)"
     sudo sed -i "${start_wm_row}i pkill openbox" "${rdp_start_wm_file}"
     start_wm_row="$(( ${start_wm_row} + 1 ))"
@@ -633,6 +670,32 @@ EOS
     sudo sed -i "${start_wm_row}i fcitx" "${rdp_start_wm_file}"
     start_wm_row="$(( ${start_wm_row} + 1 ))"
     sudo sed -i "${start_wm_row}i unset DBUS_SESSION_BUS_ADDRESS" "${rdp_start_wm_file}"
+    start_wm_row="$(( ${start_wm_row} + 1 ))"
+    sudo sed -i "${start_wm_row}i exec openbox-session"  "${rdp_start_wm_file}"
+    sudo systemctl restart xrdp
+  elif [ -z "${rdp_exec_op_how}" ] && [ -n ${HOW_VERSION_2404_PLUS} ]; then
+    start_wm_row="$(cat "${rdp_start_wm_file}" | grep -n "/etc/X11/Xsession" | head -1 | grep -oE "^[0-9]{1,4}" || e=$?)"
+    sudo sed -i "${start_wm_row}i pkill openbox" "${rdp_start_wm_file}"
+    start_wm_row="$(( ${start_wm_row} + 1 ))"
+    sudo sed -i "${start_wm_row}i while true; do" "${rdp_start_wm_file}"
+    start_wm_row="$(( ${start_wm_row} + 1 ))"
+    sudo sed -i "${start_wm_row}i dbus-update-activation-environment --systemd DBUS_SESSION_BUS_ADDRESS DISPLAY XAUTHORITY 2> /dev/null && break" "${rdp_start_wm_file}"
+    start_wm_row="$(( ${start_wm_row} + 1 ))"
+    sudo sed -i "${start_wm_row}i done" "${rdp_start_wm_file}"
+    start_wm_row="$(( ${start_wm_row} + 1 ))"
+    sudo sed -i "${start_wm_row}i export GTK_IM_MODULE=fcitx5" "${rdp_start_wm_file}"
+    start_wm_row="$(( ${start_wm_row} + 1 ))"
+    sudo sed -i "${start_wm_row}i export QT_IM_MODULE=fcitx5" "${rdp_start_wm_file}"
+    start_wm_row="$(( ${start_wm_row} + 1 ))"
+    sudo sed -i "${start_wm_row}i export XMODIFIERS=\"@im=fcitx5\"" "${rdp_start_wm_file}"
+    start_wm_row="$(( ${start_wm_row} + 1 ))"
+    sudo sed -i "${start_wm_row}i export DefaultIMModule=fcitx5" "${rdp_start_wm_file}"
+    start_wm_row="$(( ${start_wm_row} + 1 ))"
+    sudo sed -i "${start_wm_row}i (fcitx5 --disable=wayland -d --verbose '*'=0 &)" "${rdp_start_wm_file}"
+    start_wm_row="$(( ${start_wm_row} + 1 ))"
+    sudo sed -i "${start_wm_row}i xset -r 49  > /dev/null 2>&1" "${rdp_start_wm_file}"
+    # start_wm_row="$(( ${start_wm_row} + 1 ))"
+    # sudo sed -i "${start_wm_row}i unset DBUS_SESSION_BUS_ADDRESS" "${rdp_start_wm_file}"
     start_wm_row="$(( ${start_wm_row} + 1 ))"
     sudo sed -i "${start_wm_row}i exec openbox-session"  "${rdp_start_wm_file}"
     sudo systemctl restart xrdp

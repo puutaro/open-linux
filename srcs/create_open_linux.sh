@@ -9,17 +9,25 @@
 
 set -e
 #---------INCLUDE-------------
-SOURCE_DIR_PATH=$(dirname $0)
+readonly SETTING_SHELL_PATH="${0}"
+SOURCE_DIR_PATH=$(dirname "${SETTING_SHELL_PATH}")
 . ${SOURCE_DIR_PATH}/include/dialog.sh
 . ${SOURCE_DIR_PATH}/include/uninstall.sh
 #-------------------------------------
 
 #--------- CONFIRM -------------
-ALL_QUESTION_TIMES=14
+ALL_QUESTION_TIMES=13
 ALL_QUESTION_SEED_TIMES=1
 
 #ユーザー名入力画面,アンインストール、インストールパッケージ確認
-confirm_username_dialog ${ALL_QUESTION_TIMES}
+readonly USER_NAME=$(\
+  echo "${SETTING_SHELL_PATH}" \
+  | awk '{
+    split($0, path_array, "/")
+    print path_array[3]
+  }'\
+)
+# confirm_username_dialog ${ALL_QUESTION_TIMES}
 uninstall_dialog ${ALL_QUESTION_TIMES} "Gnome and Naulilus(重いパッケージを削除)"
 G_DELETE_SWICH=${CONFIRM}
 install_dialog ${ALL_QUESTION_TIMES} "Create Samba Share folda (Samba で共有フォルダを作る)"
@@ -182,7 +190,8 @@ esac
 # rhythmbox : musicplayer
 # cursor theme oxygen-cursor-theme oxygen-cursor-theme-extra
 # dconf-editor: setting
-sudo apt-get install -y pcmanfm xinput xinit nano synapse alacarte curl tlp tlp-rdw powertop git seahorse gnome-disk-utility xfce4-terminal xfce4-taskmanager dex snapd imwheel gufw xorgxrdp vino obconf numlockx samba gdebi gparted cifs-utils smbclient gnome-disk-utility wget mtools gimp file-roller lxpolkit mousepad lxinput catfish yad gdb nkf zip unzip rename lxc-utils jq openssh-client netdiscover fd-find colordiff rcs rhythmbox gsettings-desktop-schemas-dev oxygen-cursor-theme oxygen-cursor-theme-extra dconf-editor
+# w3m: web browser for terminal
+sudo apt-get install -y pcmanfm xinput xinit nano synapse alacarte curl tlp tlp-rdw powertop git seahorse gnome-disk-utility xfce4-terminal xfce4-taskmanager dex snapd imwheel gufw xorgxrdp vino obconf numlockx samba gdebi gparted cifs-utils smbclient gnome-disk-utility wget mtools gimp file-roller lxpolkit mousepad lxinput catfish yad gdb nkf zip unzip rename lxc-utils jq openssh-client netdiscover fd-find colordiff rcs rhythmbox gsettings-desktop-schemas-dev oxygen-cursor-theme oxygen-cursor-theme-extra dconf-editor w3m
 # file chooser for ubuntu 2204 over becuase gnone spec change
 case "${HOW_VERSION_2204_PLUS}" in
   "") ;;
@@ -206,8 +215,15 @@ curl -fsS https://dl.brave.com/install.sh | sh
 # synblic link for fd
 if [ ! -e "/usr/local/bin/fd" ]; then sudo ln -s $(which fdfind) /usr/local/bin/fd ;fi
 # fzf install
-if [ ! -e "${TARGET_HOME_DIR_PATH}/.fzf" ];then
-  git clone https://github.com/junegunn/fzf.git "${TARGET_HOME_DIR_PATH}/.fzf" && yes | "${TARGET_HOME_DIR_PATH}/.fzf/install"
+readonly fzf_hid_path="${TARGET_HOME_DIR_PATH}/.fzf"
+if [ ! -e "${fzf_hid_path}" ];then
+  git clone https://github.com/junegunn/fzf.git "${fzf_hid_path}" \
+  && sudo chown ${USER_NAME}:${USER_NAME} -R "${fzf_hid_path}" \
+  && sudo chmod 777 -R "${fzf_hid_path}"
+  bk_home="${HOME}"
+  export HOME="${TARGET_HOME_DIR_PATH}"
+  yes | "${TARGET_HOME_DIR_PATH}/.fzf/install"
+  export HOME="${bk_home}"
 fi
 exist_fzf_source_cmd=$(\
   cat "${TARGET_HOME_DIR_PATH}/.bashrc" \
@@ -456,6 +472,16 @@ sudo glib-compile-schemas ${nemo_glib_schemas_dir_path}/
 sudo xdg-mime default nemo.desktop inode/directory application/x-gnome-saved-search
 sudo gsettings set org.gnome.desktop.background show-desktop-icons false
 sudo gsettings set org.nemo.desktop show-desktop-icons true
+
+echo "----glow markdown shell viewer install start"
+sudo mkdir -p /etc/apt/keyrings \
+&& curl -fsSL https://repo.charm.sh/apt/gpg.key \
+| gpg --dearmor \
+| sudo tee /etc/apt/keyrings/charm.gpg > /dev/null \
+&& echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" \
+| sudo tee /etc/apt/sources.list.d/charm.list \
+&& sudo apt update && sudo apt install glow
+echo "----glow markdown shell viewer install end"
 
 if [ ${SAMBA_SETTING_CONFIRM} = "y" ];then
   echo -----samba_settings_start

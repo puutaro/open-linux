@@ -1,30 +1,30 @@
-#ユーザー名入力画面
-confirm_username_dialog () {
-  while :
-  do
-    echo "[###USERNAME###](${ALL_QUESTION_SEED_TIMES}/$1)"
-    echo "please, type username (q:exit)"
-    read USER_NAME
-    if [ -d /home/${USER_NAME} ]; then
-      echo "is username ${USER_NAME}, ok?(y/n/q)"
-       read CONFIRM
-       case "$CONFIRM" in
-      "n" ) : ;;
-      "y" ) echo "ok, execute in username: ${USER_NAME}"
-            break ;;
-      "q" ) echo "exit"
-              exit 0 ;;
-       esac
-    elif [ ${USER_NAME} = "q" ]; then
-       echo "exit"
-       exit 0
-    else
-       echo "sorry, username not found"
-    fi
-  done
-  echo "${ALL_QUESTION_SEED_TIMES},${USER_NAME}(ユーザー名),${CONFIRM}" > ${SOURCE_DIR_PATH}/config.csv
-  ALL_QUESTION_SEED_TIMES=$((ALL_QUESTION_SEED_TIMES+1))
-}
+# #ユーザー名入力画面
+# confirm_username_dialog () {
+#   while :
+#   do
+#     echo "[###USERNAME###](${ALL_QUESTION_SEED_TIMES}/$1)"
+#     echo "please, type username (q:exit)"
+#     read USER_NAME
+#     if [ -d /home/${USER_NAME} ]; then
+#       echo "is username ${USER_NAME}, ok?(y/n/q)"
+#        read CONFIRM
+#        case "$CONFIRM" in
+#       "n" ) : ;;
+#       "y" ) echo "ok, execute in username: ${USER_NAME}"
+#             break ;;
+#       "q" ) echo "exit"
+#               exit 0 ;;
+#        esac
+#     elif [ ${USER_NAME} = "q" ]; then
+#        echo "exit"
+#        exit 0
+#     else
+#        echo "sorry, username not found"
+#     fi
+#   done
+#   echo "${ALL_QUESTION_SEED_TIMES},${USER_NAME}(ユーザー名),${CONFIRM}" > ${SOURCE_DIR_PATH}/config.csv
+#   ALL_QUESTION_SEED_TIMES=$((ALL_QUESTION_SEED_TIMES+1))
+# }
 
 uninstall_dialog () {
   while :

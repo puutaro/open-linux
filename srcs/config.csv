@@ -7,8 +7,8 @@
 7,Wake up On Lan (LANからPCを起動できる設定),n
 8,Printer driver (linux対応プリンタを使えるようにする),y
 9,Libre Office (linuxでも使えるオフィスツール),y
-10,LXD (Linux専用コンテナマネージャ),y
-11,Kvm and Qenu (Linux用仮想環境),y
-12,PlayOnLinux (windowsアプリ(kindle等)が楽しめる),y
+10,LXD (Linux専用コンテナマネージャ),n
+11,Kvm and Qenu (Linux用仮想環境),n
+12,PlayOnLinux (windowsアプリ(kindle等)が楽しめる),n
 13,Remote Desktop (リモートデスクトップ),y
 14,Sublime text (開発用の軽量エディタ),y

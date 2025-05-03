@@ -177,7 +177,7 @@
     <!-- Keybindings for desktop switching -->
     <keybind key="W-s">
       <action name="Execute">
-        <command>alsactl --file ~/.config/asound.state restore</command>
+        <command>bash /home/CURRENT_USER_NAME/myapp/launch_subl.sh</command>
       </action>
     </keybind>
     <keybind key="W-Left"># HalfLeftScreen

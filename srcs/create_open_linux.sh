@@ -162,7 +162,7 @@ sudo apt-get install -y libayatana-appindicator3-1 \
 	|| sudo apt-get install -y libappindicator3-1
 sudo apt-get install -y openbox lxsession-logout obconf lxpanel feh menulibre lxrandr xfce4-power-manager blueman
 # 入力系、画面出力系インストール
-sudo apt-get install -y xorg 
+sudo apt-get install -y xorg
 sudo apt-get install -y xserver-xorg
 sudo apt-get install -y xserver-xorg-input-evdev xserver-xorg-input-mouse
 # lxappearance 外観を設定　xserver-xorg-input-evdev：これがないとキーボード入力ができない
@@ -180,12 +180,12 @@ esac
 # sudo apt-get install -y fcitx-config-gtk
 
 #xinput：入力 xinit：RDP時に初期設定で必要 seahorse:鍵とパスワードの管理 gnome-disk-utility:usbメモリ初期化
-#file-roller:GUIメニューで圧縮ファイル展開 gdebi:dpkg展開インストール xrdp:remote desktop 
+#file-roller:GUIメニューで圧縮ファイル展開 gdebi:dpkg展開インストール xrdp:remote desktop
 #pcmanfm:ファイルやデスクトップマネージャ cifs:network mount utility samba-client:samba系
 #gnome-disk-utility:ディスクマウントや書き込み等
 #gimp 画像編集ソフト lxpolkit:guiでroot実行するのに必要 mousepad:メモ帳 lxinput:マウスやキーボードの設定
 #yad:gtk shell library gdb:cのdebug tool nkf:shift-jis等変換 jq:json扱うツール
-# fd-find:high speed find  rcs:diff3,merge 
+# fd-find:high speed find  rcs:diff3,merge
 # commnt out thunar  thunar-archive-plugin
 # rhythmbox : musicplayer
 # cursor theme oxygen-cursor-theme oxygen-cursor-theme-extra
@@ -733,7 +733,7 @@ readonly sublime_user_dir_path="sublime-text/Packages/User"
 if [ "${SUBLIME_TEXT_INSTALL_CONFIRM}" = "y" ]; then
   wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
   echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sucblime-text.list
-  sudo apt-get update -y && sudo apt-get install sublime-text sublime-merge -y
+  sudo apt-get update -y && sudo apt-get install sublime-text sublime-merge  shellcheck -y
   sudo mkdir -p "${TARGET_CONFIG_PATH}/${sublime_user_dir_path}"
   sudo cp -rvf "${SOURCE_SUBLIME_USER_DIR_PATH}"/* "${TARGET_CONFIG_PATH}/${sublime_user_dir_path}/"
   sudo chown ${USER_NAME}:${USER_NAME} -R "${TARGET_CONFIG_PATH}/${sublime_user_dir_path}"

@@ -191,7 +191,8 @@ esac
 # cursor theme oxygen-cursor-theme oxygen-cursor-theme-extra
 # dconf-editor: setting
 # w3m: web browser for terminal
-sudo apt-get install -y pcmanfm xinput xinit nano synapse alacarte curl tlp tlp-rdw powertop git seahorse gnome-disk-utility xfce4-terminal xfce4-taskmanager dex snapd imwheel gufw xorgxrdp vino obconf numlockx samba gdebi gparted cifs-utils smbclient gnome-disk-utility wget mtools gimp file-roller lxpolkit mousepad lxinput catfish yad gdb nkf zip unzip rename lxc-utils jq openssh-client netdiscover fd-find colordiff rcs rhythmbox gsettings-desktop-schemas-dev oxygen-cursor-theme oxygen-cursor-theme-extra dconf-editor w3m
+# vim-gtk3: graphical vim
+sudo apt-get install -y pcmanfm xinput xinit nano synapse alacarte curl tlp tlp-rdw powertop git seahorse gnome-disk-utility xfce4-terminal xfce4-taskmanager dex snapd imwheel gufw xorgxrdp vino obconf numlockx samba gdebi gparted cifs-utils smbclient gnome-disk-utility wget mtools gimp file-roller lxpolkit mousepad lxinput catfish yad gdb nkf zip unzip rename lxc-utils jq openssh-client netdiscover fd-find colordiff rcs rhythmbox gsettings-desktop-schemas-dev oxygen-cursor-theme oxygen-cursor-theme-extra dconf-editor w3m vim-gtk3
 # file chooser for ubuntu 2204 over becuase gnone spec change
 case "${HOW_VERSION_2204_PLUS}" in
   "") ;;
@@ -732,7 +733,7 @@ readonly sublime_user_dir_path="sublime-text/Packages/User"
 if [ "${SUBLIME_TEXT_INSTALL_CONFIRM}" = "y" ]; then
   wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
   echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sucblime-text.list
-  sudo apt-get update -y && sudo apt-get install sublime-text -y
+  sudo apt-get update -y && sudo apt-get install sublime-text sublime-merge -y
   sudo mkdir -p "${TARGET_CONFIG_PATH}/${sublime_user_dir_path}"
   sudo cp -rvf "${SOURCE_SUBLIME_USER_DIR_PATH}"/* "${TARGET_CONFIG_PATH}/${sublime_user_dir_path}/"
   sudo chown ${USER_NAME}:${USER_NAME} -R "${TARGET_CONFIG_PATH}/${sublime_user_dir_path}"

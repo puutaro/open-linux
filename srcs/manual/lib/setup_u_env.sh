@@ -18,3 +18,7 @@ git config --add --global url."git@github.com:".insteadOf https://github.com && 
 go env -w GONOPROXY="go.upsider.dev/core,upsidr.com,github.com/upsidr/qnit" && \
 go env -w GONOSUMDB="go.upsider.dev/core,upsidr.com,github.com/upsidr/qnit" && \
 go env -w GOPRIVATE="go.upsider.dev/core,upsidr.com,github.com/upsidr/qnit"
+
+# install minikube
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64

@@ -1,0 +1,20 @@
+" A double quote character starts a comment.
+
+let mapleader=<space>
+
+nnoremap <Leader><CR> a<CR><Esc>
+nnoremap <Leader><CR> a<CR><Esc>
+nnoremap <Leader>n A<CR><Esc>
+nnoremap <Leader>a ggVG
+nnoremap <Leader>y yiw
+nnoremap <Leader>p viwpyiw
+nnoremap <Leader>t >>
+nnoremap <Leader>r <lt><lt>
+nnoremap U <c-r>
+nnoremap <Leader>m `
+nnoremap <S-CR> J
+nnoremap J 10j
+nnoremap K 10k
+" <S-Insert>
+" nnoremap <Leader>i <S-Insert>
+" noremap <Leader>A  oanother line<Esc>

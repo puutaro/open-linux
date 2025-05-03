@@ -1,14 +1,21 @@
 [
-    // {
-    //     "keys": [
-    //         "ctrl+tab"
-    //     ],
-    //     "command": "next_view"
-    // },
-    // {
-    //     "keys": [
-    //         "ctrl+shift+tab"
-    //     ],
-    //     "command": "prev_view"
-    // }
+	{
+		"keys": ["ctrl+h"],
+		"command": "show_panel",
+		"args": {
+			"panel": "replace",
+			"reverse": false
+		}
+	},
+	{ "keys": ["ctrl+shift+o"], "command": "prompt_open_file" },
+	{ "keys": ["ctrl+shift+n"], "command": "new_file" },
+	{ "keys": ["ctrl+shift+w"], "command": "close" },
+	{ "keys": ["ctrl+shift+w"], "command": "close_transient", "context":
+		[
+			{ "key": "group_has_transient_sheet", "operator": "equal", "operand": true }
+		]
+	},
+	{ "keys": ["ctrl+3"], "command": "save", "args": { "async": true } },
+	{ "keys": ["ctrl+alt+s"], "command": "prompt_save_as" },
 ]
+

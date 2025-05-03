@@ -1,7 +1,22 @@
-// Settings in here override those in "Default/Preferences.sublime-settings",
-// and are overridden in turn by syntax-specific settings.
 {
-	"font_face": "DejaVu Sans",
-	"font_size": 16,
-	"word_wrap": true,
+    "font_face": "DejaVu Sans",
+    "font_size": 15,
+    "word_wrap": true,
+    "ignored_packages":
+    [
+       // "NeoVintageous",
+        "Vintage",
+    ],
+
+    /*"ignored_packages": [],*/
+    "vintage_ctrl_keys": true,
+    "vintage_start_in_command_mode": true,
+    // "vintage_use_clipboard": true,
+    "vintageous_use_sys_clipboard": true,
+    "index_files": false,
+    "neovintageous_build_version": 13200,
+    //ステータスバーに文字コードを表示
+    "show_encoding" : true,
+    //ステータスバーに改行コードを表示
+    "show_line_endings": true
 }

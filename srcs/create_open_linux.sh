@@ -192,7 +192,7 @@ esac
 # dconf-editor: setting
 # w3m: web browser for terminal
 # vim-gtk3: graphical vim
-sudo apt-get install -y pcmanfm xinput xinit nano synapse alacarte curl tlp tlp-rdw powertop git seahorse gnome-disk-utility xfce4-terminal xfce4-taskmanager dex snapd imwheel gufw xorgxrdp vino obconf numlockx samba gdebi gparted cifs-utils smbclient gnome-disk-utility wget mtools gimp file-roller lxpolkit mousepad lxinput catfish yad gdb nkf zip unzip rename lxc-utils jq openssh-client netdiscover fd-find colordiff rcs rhythmbox gsettings-desktop-schemas-dev oxygen-cursor-theme oxygen-cursor-theme-extra dconf-editor w3m vim-gtk3
+sudo apt-get install -y pcmanfm xinput xinit nano synapse alacarte curl tlp tlp-rdw powertop git seahorse gnome-disk-utility xfce4-terminal xfce4-taskmanager dex snapd imwheel gufw xorgxrdp vino obconf numlockx samba gdebi gparted cifs-utils smbclient gnome-disk-utility wget mtools gimp file-roller lxpolkit mousepad lxinput catfish yad gdb nkf zip unzip rename lxc-utils jq openssh-client netdiscover fd-find colordiff rcs rhythmbox gsettings-desktop-schemas-dev oxygen-cursor-theme oxygen-cursor-theme-extra dconf-editor w3m vim-gtk3 unison
 # file chooser for ubuntu 2204 over becuase gnone spec change
 case "${HOW_VERSION_2204_PLUS}" in
   "") ;;
@@ -203,6 +203,14 @@ case "${HOW_VERSION_2204_PLUS}" in
     sudo apt-get install -y xdg-desktop-portal-lxqt || e=$?
     sudo apt-get install -y zeitgeist
 ;;esac
+# add lxpanel to battery monitor
+readonly lx_pannel_battery_plugin_repo_name="lxpanel-alternative-battery-plugin"
+readonly lx_pannel_battery_plugin_dir_path="${TARGET_HOME_DIR_PATH}/${lx_pannel_battery_plugin_repo_name}"
+mkdir -p  "${lx_pannel_battery_plugin_dir_path}"
+git clone \
+  "https://github.com/Tux4Admin/${lx_pannel_battery_plugin_repo_name}" \
+  "${lx_pannel_battery_plugin_dir_path}"
+sudo cp "${lx_pannel_battery_plugin_dir_path}/BatteryStatePlugin.so" /usr/lib/x86_64-linux-gnu/lxpanel/plugins/
 # set git alias
 git config --global alias.s status
 git config --global alias.d diff
@@ -372,7 +380,7 @@ sudo chown ${USER_NAME}:${USER_NAME} -R "${TARGET_HOME_DIR_PATH}/.imwheelrc"
 sudo chmod 777 -R "${TARGET_HOME_DIR_PATH}/.imwheelrc"
 imwheel -k
 # startupスクリプト
-readonly TOUCHPAD_DEVICE_NAME="$(echo $(xinput --list --name-only | grep -i  -e touchpad -e glidepoint -e trackpad))"
+readonly TOUCHPAD_DEVICE_NAME="$(echo $(xinput --list --name-only | grep -i  -e touchpad -e glidepoint -e trackpad -e synaptics))"
 if [ -n "${TOUCHPAD_DEVICE_NAME}" ]; then
   sudo sed -i "s|CURRENT_TOCHPAD_DEVICE_NAME|${TOUCHPAD_DEVICE_NAME}|g" "${TARGET_HOME_DIR_PATH}/startup.sh"
 fi

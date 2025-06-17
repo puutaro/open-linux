@@ -26,11 +26,16 @@ SWITCH=INNER
 
 ### Please write bellow with shell script
 
+case "${1:-}" in
+	"") ;;
+	*) SWITCH="${1}"
+		;;
+esac
 readonly SERVICE_PATH="/usr/lib/systemd/user/xdg-desktop-portal-gtk.service"
 # [Service]
 # --> Environment="DISPLAY=:10.0"
 function switch_display_num(){
-	local display_num="${2}"
+	local display_num="${1}"
 	if [ -z "${DISPLAY_ENV}" ];then
 		sudo \
 			sed -i "$ a Environment=\"DISPLAY=:${display_num}\"" \
@@ -51,12 +56,10 @@ readonly DISPLAY_ENV=$(\
 case "${SWITCH}" in
 	"INNER")
 		switch_display_num \
-			"${CUR_SERVICE_CON}" \
 			"10.0"
 		;;
 	"OUT")
 		switch_display_num \
-			"${CUR_SERVICE_CON}" \
 			"0.0"
 		;;
 esac

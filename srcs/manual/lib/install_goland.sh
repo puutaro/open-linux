@@ -8,7 +8,7 @@ get_usr(){
         }'
 }
 get_desktop_path(){
-    local en_desktop_path="${1}/desktop"
+    local en_desktop_path="${1}/Desktop"
     if [ -d "${en_desktop_path}" ];then
         echo "${en_desktop_path}"
         return

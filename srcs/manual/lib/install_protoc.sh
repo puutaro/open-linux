@@ -52,7 +52,8 @@ install_protoc(){
 		"${BASHRC_PATH}"
 }		
 install_mockgen(){
-	go install github.com/golang/mock/mockgen@v1.6.0
+	go install go.uber.org/mock/mockgen@latest
+	# go install github.com/golang/mock/mockgen@v1.6.0
 }
 readonly USER_NAME=$(get_usr "${0}")
 readonly HOME_PATH="/home/${USER_NAME}"

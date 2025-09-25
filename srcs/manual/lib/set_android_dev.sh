@@ -9,11 +9,18 @@ sudo apt-get install -y android-tools-adb
 
 
 readonly android_rules_path="/etc/udev/rules.d/51-android.rules"
-sudo cat << EOS > "${android_rules_path}"
+cat << EOS | sudo tee "${android_rules_path}"
 # /etc/udev/rules.d/android.rules
 SUBSYSTEM=="usb", ATTR{idVendor}=="0482", MODE="0666", GROUP="plugdev"
 SUBSYSTEM=="usb", ATTR{idVendor}=="1004", MODE="0666", GROUP="plugdev"
 SUBSYSTEM=="usb", ATTR{idVendor}=="04e8", MODE="0666", GROUP="plugdev"
 
 EOS
+# sudo cat << EOS > "${android_rules_path}"
+# # /etc/udev/rules.d/android.rules
+# SUBSYSTEM=="usb", ATTR{idVendor}=="0482", MODE="0666", GROUP="plugdev"
+# SUBSYSTEM=="usb", ATTR{idVendor}=="1004", MODE="0666", GROUP="plugdev"
+# SUBSYSTEM=="usb", ATTR{idVendor}=="04e8", MODE="0666", GROUP="plugdev"
+
+# EOS
 sudo chmod a+r "${android_rules_path}"

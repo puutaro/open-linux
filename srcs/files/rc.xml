@@ -215,6 +215,11 @@
         <execute>reboot</execute>
       </action>
     </keybind>
+    <keybind key="W-F3">
+      <action name="Execute">
+        <execute>systemctl suspend</execute>
+      </action>
+    </keybind>
     <keybind key="W-C-d">
       <action name="Execute">
         <command>xrandr --output eDP-1 --off --output HDMI-1 --mode 1920x1080</command>

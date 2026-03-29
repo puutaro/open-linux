@@ -32,6 +32,7 @@ xinput set-prop 'CURRENT_TOCHPAD_DEVICE_NAME' 'Synaptics Two-Finger Scrolling' 1
 syndaemon -i 1 -t -k &
 fcitx-autostart &
 numlockx off &
+redshift -O 4900 &
 #imwheel -k &
 readonly passowrd="1621"
 # /usr/bin/google-chrome-stable %U &

@@ -43,11 +43,13 @@ insert_str_to_file(){
 
 echo "type server share path ex) 192.168.0.6:/home/haumi/デスクトップ/share"
 read -e -p ": " SERVER_SHARE_PATH
-sudo apt-get install -y nfs-common
 readonly USER_NAME=$(get_usr "${0}")
 readonly HOME_PATH="/home/${USER_NAME}"
 readonly DESKTOP_PATH=$(get_desktop_path ${HOME_PATH})
-readonly SHARE_PATH="${DESKTOP_PATH}/haumi"
+echo "type client share path ex) ${DESKTOP_PATH}/haumi"
+read -e -p ": " SHARE_PATH
+sudo apt-get install -y nfs-common
+# readonly SHARE_PATH="${DESKTOP_PATH}/haumi"
 sudo mount ${SERVER_SHARE_PATH} "${SHARE_PATH}"
 insert_str_to_file \
 	"${SERVER_SHARE_PATH} ${SHARE_PATH} nfs defaults 0 0" \

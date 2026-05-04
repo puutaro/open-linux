@@ -27,7 +27,7 @@ readonly DESKTOP_DIR_PATH="$(get_desktop_path "${HOME_PATH}")"
 # 実行したい自作スクリプトのフルパスを指定してください
 readonly TARGET_SCRIPT="${DESKTOP_DIR_PATH}/share/shell/cmdclick/full_use/vlc_play.sh"
 # 右クリックメニューに表示される名前
-readonly ACTION_NAME="特別vlc shellで再生"
+readonly ACTION_NAME="履歴vlc shellで再生"
 # 設定ファイルの名前
 readonly ACTION_FILE_NAME="mp4_custom_action.nemo_action"
 
@@ -46,7 +46,7 @@ cat << EOF > "$ACTION_DIR/$ACTION_FILE_NAME"
 Active=true
 Name=$ACTION_NAME
 Comment=mp4ファイルに対してvlcで特別再生します。
-Exec=$TARGET_SCRIPT %f
+Exec=$TARGET_SCRIPT %f --mode paste
 Icon-Name=video-x-generic
 Selection=s
 Extensions=mp4;

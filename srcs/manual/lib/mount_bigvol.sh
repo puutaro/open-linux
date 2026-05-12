@@ -1,4 +1,5 @@
-#!/bin/bash
+#!bin/bash
+
 
 get_usr(){
 	echo "${1}" \
@@ -41,21 +42,11 @@ insert_str_to_file(){
 	echo "${insert_str}" >> ${file_path}
 }
 
-sudo apt-get install -y nfs-kernel-server
+
+readonly BIGVOL_UUID="$(sudo blkid -s UUID -o value /dev/sdb1)"
 readonly USER_NAME=$(get_usr "${0}")
 readonly HOME_PATH="/home/${USER_NAME}"
-readonly DESKTOP_PATH=$(get_desktop_path ${HOME_PATH})
-readonly SHARE_PATH="${DESKTOP_PATH}/share"
-readonly BIG_SHARE_PATH="/mnt/bigvol/bigshare"
-sudo chmod 777 -R "${BIG_SHARE_PATH}"
+readonly MOUNT_PATH="/mnt/bigvol"
 insert_str_to_file \
-	"${SHARE_PATH} 192.168.0.0/24(rw,no_root_squash,no_subtree_check)" \
-	"/etc/exports"
-insert_str_to_file \
-	"${BIG_SHARE_PATH} 192.168.0.0/24(rw,no_root_squash,no_subtree_check)" \
-	"/etc/exports"
-insert_str_to_file \
-	"${BIG_SHARE_PATH} 192.168.122.1/24(rw,no_root_squash,no_subtree_check)" \
-	"/etc/exports"
-sudo ufw allow 2049
-sudo systemctl restart nfs-kernel-server
+	"UUID=${BIGVOL_UUID} ${MOUNT_PATH} ext4 defaults 0 2" \
+	"/etc/fstab"

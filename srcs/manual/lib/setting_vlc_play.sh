@@ -25,7 +25,7 @@ readonly HOME_PATH="/home/$(get_usr "${0}")"
 readonly DESKTOP_DIR_PATH="$(get_desktop_path "${HOME_PATH}")"
 # --- 設定項目 ---
 # 実行したい自作スクリプトのフルパスを指定してください
-readonly TARGET_SCRIPT="${DESKTOP_DIR_PATH}/share/shell/cmdclick/full_use/vlc_play.sh"
+readonly TARGET_SCRIPT="${DESKTOP_DIR_PATH}/share/shell/cmdclick/move/vlc_play.sh"
 # 右クリックメニューに表示される名前
 readonly ACTION_NAME="履歴vlc shellで再生"
 # 設定ファイルの名前
@@ -33,6 +33,11 @@ readonly ACTION_FILE_NAME="mp4_custom_action.nemo_action"
 
 # --- 処理開始 ---
 readonly ACTION_DIR="${HOME_PATH}/.local/share/nemo/actions"
+
+readonly short_vlc_play_cmd="vl"
+sudo ln -s \
+	"${HOME}/デスクトップ/share/shell/cmdclick/move/vlc_play.sh"\
+	"/usr/local/bin/${short_vlc_play_cmd}"
 
 # 1. ディレクトリの作成
 if [ ! -d "$ACTION_DIR" ]; then

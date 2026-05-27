@@ -473,7 +473,7 @@
     </keybind>
     <keybind key="W-v">
       <action name="Execute">
-        <command>sh /home/CURRENT_USER_NAME/myapp/seed_button.sh</command>
+        <command>sh /home/haumi/myapp/launch_search_mpv.sh</command>
       </action>
     </keybind>
     <keybind key="Muhenkan">

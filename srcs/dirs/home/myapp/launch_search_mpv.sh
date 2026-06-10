@@ -1,4 +1,6 @@
 #!/bin/bash
+
+e=""
 focus_termial(){
 	local SEARCH_WINDOW="xfce4-terminal.Xfce4-terminal"
 
@@ -14,5 +16,10 @@ focus_termial(){
 
 focus_termial
 sleep 0.2
-xdotool type "vl"
+readonly romaji_on=2
+if [ "$(fcitx5-remote)" -eq "${romaji_on}" ];then
+	xdotool key Zenkaku_Hankaku || e=$?
+fi
+sleep 0.1
+xdotool key "v"
 xdotool key  Return

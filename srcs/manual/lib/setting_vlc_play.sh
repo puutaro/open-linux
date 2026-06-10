@@ -34,7 +34,7 @@ readonly ACTION_FILE_NAME="mp4_custom_action.nemo_action"
 # --- 処理開始 ---
 readonly ACTION_DIR="${HOME_PATH}/.local/share/nemo/actions"
 
-readonly short_vlc_play_cmd="vl"
+readonly short_vlc_play_cmd="v"
 sudo ln -s \
 	"${HOME}/デスクトップ/share/shell/cmdclick/move/vlc_play.sh"\
 	"/usr/local/bin/${short_vlc_play_cmd}"

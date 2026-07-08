@@ -197,7 +197,9 @@ esac
 # mesa-va-drivers vainfo: gpu compress by fmpeg
 # webp-pixbuf-loader: webp image preview in file manager
 # bat: highlight syntax cat
-sudo apt-get install -y pcmanfm xinput xinit nano synapse alacarte curl tlp tlp-rdw powertop git seahorse gnome-disk-utility xfce4-terminal xfce4-taskmanager dex snapd imwheel gufw xorgxrdp vino obconf numlockx samba gdebi gparted cifs-utils smbclient gnome-disk-utility wget mtools gimp file-roller lxpolkit mousepad lxinput catfish yad gdb nkf zip unzip rename lxc-utils jq openssh-client netdiscover fd-find colordiff rcs rhythmbox gsettings-desktop-schemas-dev oxygen-cursor-theme oxygen-cursor-theme-extra dconf-editor w3m vim-gtk3 unison redshift vlc mesa-va-drivers vainfo mediainfo webp-pixbuf-loader bat
+# sox libsox-fmt-all: music file play
+# gawk: gnu awk
+sudo apt-get install -y pcmanfm xinput xinit nano synapse alacarte curl tlp tlp-rdw powertop git seahorse gnome-disk-utility xfce4-terminal xfce4-taskmanager dex snapd imwheel gufw xorgxrdp vino obconf numlockx samba gdebi gparted cifs-utils smbclient gnome-disk-utility wget mtools gimp file-roller lxpolkit mousepad lxinput catfish yad gdb nkf zip unzip rename lxc-utils jq openssh-client netdiscover fd-find colordiff rcs rhythmbox gsettings-desktop-schemas-dev oxygen-cursor-theme oxygen-cursor-theme-extra dconf-editor w3m vim-gtk3 unison redshift vlc mesa-va-drivers vainfo mediainfo webp-pixbuf-loader bat sox libsox-fmt-all gawk
 # file chooser for ubuntu 2204 over becuase gnone spec change
 case "${HOW_VERSION_2204_PLUS}" in
   "") ;;
@@ -285,6 +287,8 @@ if [ ! -e "${TARGET_HOME_DIR_PATH}/.difbk" ];then
   git clone https://github.com/puutaro/difbk.git "${TARGET_HOME_DIR_PATH}/.difbk"
 fi
 sudo bash "${TARGET_HOME_DIR_PATH}/.difbk/install/install.sh" "l"
+# aku install
+curl https://raw.githubusercontent.com/puutaro/aku/refs/heads/master/install.sh | sudo bash
 # openvpn install
 sudo apt-get install openvpn -y && sudo apt-get install network-manager-openvpn -y && sudo apt-get install network-manager-openvpn-gnome -y
 sudo apt-add-repository -y ppa:remmina-ppa-team/remmina-next
